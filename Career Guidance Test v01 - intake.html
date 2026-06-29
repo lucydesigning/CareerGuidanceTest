@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ask a question</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --text-primary: #1a1a18;
+    --text-secondary: #5f5e5a;
+    --text-muted: #888780;
+    --surface-0: #f1efe8;
+    --surface-1: #e8e6df;
+    --surface-2: #ffffff;
+    --border: rgba(26,26,24,0.12);
+    --border-strong: rgba(26,26,24,0.18);
+    --border-stronger: rgba(26,26,24,0.28);
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-voice: Georgia, "Times New Roman", serif;
+    --radius: 10px;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--surface-0);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2rem 1rem 5rem;
+  }
+
+  .wrap {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .intro { display: none; }
+  .intro.visible { display: block; }
+
+  .intro-heading {
+    font-family: var(--font-voice);
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+
+  .intro-body {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+
+  .intro-body p { margin-bottom: 1rem; }
+  .intro-body p:last-child { margin-bottom: 0; }
+
+  .divider { height: 0.5px; background: var(--border); margin: 1.75rem 0; }
+
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 2.5rem; }
+  .pip { height: 3px; flex: 1; border-radius: 2px; background: var(--border-strong); transition: background 0.3s; }
+  .pip.done { background: var(--text-primary); }
+  .pip.active { background: var(--text-secondary); }
+
+  .step { display: none; }
+  .step.visible { display: block; }
+
+  .step-label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.6rem; }
+  .step-heading { font-family: var(--font-voice); font-size: 26px; font-weight: 400; line-height: 1.3; color: var(--text-primary); margin-bottom: 0.5rem; }
+  .step-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 2rem; }
+
+  .field-group { display: flex; flex-direction: column; gap: 16px; margin-bottom: 2rem; }
+  .field-row { display: flex; flex-direction: column; }
+  .field-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
+  .field-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; line-height: 1.5; }
+  .name-note { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 6px; }
+
+  select, input[type="text"] {
+    width: 100%; padding: 12px 14px; font-family: var(--font-sans); font-size: 15px;
+    color: var(--text-primary); background: var(--surface-2);
+    border: 0.5px solid var(--border-strong); border-radius: var(--radius);
+    appearance: none; -webkit-appearance: none; transition: border-color 0.15s;
+  }
+  select:focus, input[type="text"]:focus { outline: none; border-color: var(--text-primary); }
+  .select-wrap { position: relative; }
+  .select-wrap::after {
+    content: ''; position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+    border-top: 5px solid var(--text-muted); pointer-events: none;
+  }
+
+  .career-stage-row { display: flex; flex-direction: column; gap: 10px; }
+
+  .toggle-pill {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px;
+    border: 0.5px solid var(--border-strong); border-radius: var(--radius);
+    cursor: pointer; background: var(--surface-2); font-size: 14px;
+    color: var(--text-secondary); user-select: none; width: fit-content;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .toggle-pill:hover { border-color: var(--text-muted); }
+  .toggle-pill.active { border-color: var(--text-primary); background: var(--surface-1); color: var(--text-primary); }
+  .toggle-dot {
+    width: 16px; height: 16px; border-radius: 3px; border: 1.5px solid var(--border-stronger);
+    flex-shrink: 0; position: relative; transition: border-color 0.15s, background 0.15s;
+  }
+  .toggle-pill.active .toggle-dot { border-color: var(--text-primary); background: var(--text-primary); }
+  .toggle-pill.active .toggle-dot::after {
+    content: ''; position: absolute; top: 2px; left: 4px;
+    width: 5px; height: 8px; border: 1.5px solid #fff;
+    border-top: none; border-left: none; transform: rotate(45deg);
+  }
+
+  .option-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 2rem; }
+  .option {
+    display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+    border: 0.5px solid var(--border-strong); border-radius: var(--radius);
+    cursor: pointer; background: var(--surface-2); transition: border-color 0.15s, background 0.15s;
+  }
+  .option:hover { border-color: var(--text-muted); }
+  .option.selected { border-color: var(--text-primary); background: var(--surface-1); }
+  .option-dot {
+    width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border-stronger);
+    flex-shrink: 0; margin-top: 1px; position: relative; transition: border-color 0.15s, background 0.15s;
+  }
+  .option.selected .option-dot { border-color: var(--text-primary); background: var(--text-primary); }
+  .option.selected .option-dot::after {
+    content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 6px; height: 6px; border-radius: 50%; background: #fff;
+  }
+  .option-text { flex: 1; }
+  .option-label { font-size: 15px; color: var(--text-primary); font-weight: 500; line-height: 1.3; }
+  .option-desc { font-size: 13px; color: var(--text-secondary); margin-top: 2px; line-height: 1.5; }
+
+  .checkbox-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 2rem; }
+  .check-option {
+    display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+    border: 0.5px solid var(--border-strong); border-radius: var(--radius);
+    cursor: pointer; background: var(--surface-2); transition: border-color 0.15s, background 0.15s;
+  }
+  .check-option:hover { border-color: var(--text-muted); }
+  .check-option.selected { border-color: var(--text-primary); background: var(--surface-1); }
+  .check-box {
+    width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid var(--border-stronger);
+    flex-shrink: 0; margin-top: 1px; position: relative; transition: border-color 0.15s, background 0.15s;
+  }
+  .check-option.selected .check-box { border-color: var(--text-primary); background: var(--text-primary); }
+  .check-option.selected .check-box::after {
+    content: ''; position: absolute; top: 3px; left: 5px;
+    width: 5px; height: 8px; border: 1.5px solid #fff;
+    border-top: none; border-left: none; transform: rotate(45deg);
+  }
+
+  .chip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-bottom: 2rem; }
+  .chip {
+    display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+    border: 0.5px solid var(--border-strong); border-radius: var(--radius);
+    cursor: pointer; font-size: 14px; color: var(--text-secondary);
+    background: var(--surface-2); user-select: none; line-height: 1.3;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .chip:hover { border-color: var(--text-muted); color: var(--text-primary); }
+  .chip-check {
+    width: 16px; height: 16px; border-radius: 3px; border: 1.5px solid var(--border-stronger);
+    flex-shrink: 0; position: relative; transition: border-color 0.15s, background 0.15s;
+  }
+  .chip.selected { border-color: var(--text-primary); background: var(--text-primary); color: #fff; }
+  .chip.selected .chip-check { border-color: #fff; background: #fff; }
+  .chip.selected .chip-check::after {
+    content: ''; position: absolute; top: 2px; left: 4px;
+    width: 5px; height: 7px; border: 1.5px solid var(--text-primary);
+    border-top: none; border-left: none; transform: rotate(45deg);
+  }
+
+  textarea {
+    width: 100%; padding: 14px 16px; font-family: var(--font-sans); font-size: 15px;
+    line-height: 1.6; color: var(--text-primary); background: var(--surface-2);
+    border: 0.5px solid var(--border-strong); border-radius: var(--radius);
+    resize: vertical; transition: border-color 0.15s;
+  }
+  textarea:focus { outline: none; border-color: var(--text-primary); }
+  textarea::placeholder { color: var(--text-muted); font-style: italic; font-size: 13px; }
+  .textarea-sm { min-height: 90px; }
+  .textarea-md { min-height: 110px; }
+
+  .nav { display: flex; align-items: center; justify-content: space-between; margin-top: 2rem; }
+  .btn-back { font-size: 14px; color: var(--text-secondary); background: none; border: none; cursor: pointer; padding: 0; }
+  .btn-back:hover { color: var(--text-primary); }
+  .btn-next {
+    font-size: 15px; font-weight: 500; color: #fff; background: var(--text-primary);
+    border: none; border-radius: 8px; padding: 12px 28px; cursor: pointer; transition: opacity 0.15s;
+  }
+  .btn-next:hover { opacity: 0.85; }
+  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .error-hint { font-size: 12px; color: #c0392b; margin-top: 8px; display: none; }
+  .error-hint.visible { display: block; }
+
+  .thanks { display: none; }
+  .thanks.visible { display: block; padding: 3rem 0; }
+  .thanks-icon { font-size: 40px; margin-bottom: 1.5rem; text-align: center; }
+  .thanks-heading { font-family: var(--font-voice); font-size: 28px; font-weight: 400; color: var(--text-primary); margin-bottom: 1.25rem; text-align: center; }
+  .thanks-body { font-size: 15px; color: var(--text-secondary); line-height: 1.75; max-width: 440px; margin: 0 auto; }
+  .thanks-body p { margin-bottom: 1rem; }
+  .thanks-body p:last-child { margin-bottom: 0; }
+
+  .submitting-note { font-size: 13px; color: var(--text-muted); margin-top: 0.75rem; text-align: right; display: none; }
+  .submitting-note.visible { display: block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Intro -->
+  <div class="intro visible" id="intro">
+    <div class="intro-heading">A small experiment in getting better career advice.</div>
+    <div class="intro-body">
+      <p>We're running a private test with a small group of women. You post a real career question, and within a few days, a handful of women who've navigated something similar will send you a short, candid response in their own words.</p>
+      <p>No algorithm. No community feed. No formal mentorship commitment. Just real perspectives from women who've been there.</p>
+      <p>Because you're part of an early test, matching may take longer than we'd like. We appreciate your patience and your willingness to help us figure this out.</p>
+    </div>
+    <div class="divider"></div>
+    <div class="nav" style="margin-top:0;"><span></span><button class="btn-next" onclick="startFlow()">Ask my question</button></div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-bar" id="progressBar" style="display:none;">
+    <div class="pip" id="p0"></div><div class="pip" id="p1"></div><div class="pip" id="p2"></div>
+    <div class="pip" id="p3"></div><div class="pip" id="p4"></div><div class="pip" id="p5"></div>
+    <div class="pip" id="p6"></div><div class="pip" id="p7"></div><div class="pip" id="p8"></div>
+  </div>
+
+  <!-- Step 1: Career context -->
+  <div class="step" id="step0">
+    <div class="step-label">Step 1 of 9</div>
+    <div class="step-heading">Tell us a little about where you are in your career.</div>
+    <div class="step-sub">This helps us find women whose path and industry are closest to yours.</div>
+    <div class="field-group">
+      <div class="field-row">
+        <div class="field-label">Career stage</div>
+        <div class="career-stage-row">
+          <div class="select-wrap">
+            <select id="career-stage">
+              <option value="" disabled selected>Years of experience</option>
+              <option value="Early career (0 to 5 years)">Early career (0 to 5 years)</option>
+              <option value="Mid-career (5 to 15 years)">Mid-career (5 to 15 years)</option>
+              <option value="Senior (15 or more years)">Senior (15 or more years)</option>
+              <option value="Founder or self-employed">Founder or self-employed</option>
+            </select>
+          </div>
+          <div class="toggle-pill" id="transition-toggle" onclick="toggleTransition()">
+            <div class="toggle-dot"></div>
+            Currently in transition
+          </div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Current or most recent role</div>
+        <input type="text" id="career-role" placeholder="e.g. Senior Product Manager, Consultant, COO" />
+      </div>
+      <div class="field-row">
+        <div class="field-label">Industry</div>
+        <input type="text" id="career-industry" placeholder="e.g. Finance, Healthcare, Tech, Law" />
+      </div>
+      <div class="field-row">
+        <div class="field-label">Anything else useful for matching? <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
+        <input type="text" id="career-other" placeholder="e.g. I work in a male-dominated field, I'm a working parent..." />
+      </div>
+    </div>
+    <div class="error-hint" id="err0">Please share at least your career stage before continuing.</div>
+    <div class="nav"><button class="btn-back" onclick="goIntro()">Back</button><button class="btn-next" onclick="next(0)">Continue</button></div>
+  </div>
+
+  <!-- Step 2: Who to ask -->
+  <div class="step" id="step1">
+    <div class="step-label">Step 2 of 9</div>
+    <div class="step-heading">Who would you like to hear from?</div>
+    <div class="step-sub">There's no wrong answer here. This helps us find the right women for your question.</div>
+    <div class="option-group" id="who-group">
+      <div class="option" data-val="Women further along than me" onclick="selectOption('who-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Women further along than me</div><div class="option-desc">They've navigated what I'm facing and can speak from experience</div></div></div>
+      <div class="option" data-val="Women at a similar stage" onclick="selectOption('who-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Women at a similar stage</div><div class="option-desc">Peers who are working through the same questions right now</div></div></div>
+      <div class="option" data-val="No preference" onclick="selectOption('who-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">No preference</div><div class="option-desc">I'm open. Find the women whose story fits best</div></div></div>
+    </div>
+    <div class="error-hint" id="err1">Please choose one before continuing.</div>
+    <div class="nav"><button class="btn-back" onclick="back(1)">Back</button><button class="btn-next" onclick="next(1)">Continue</button></div>
+  </div>
+
+  <!-- Step 3: Category -->
+  <div class="step" id="step2">
+    <div class="step-label">Step 3 of 9</div>
+    <div class="step-heading">What kind of situation are you navigating?</div>
+    <div class="step-sub">Pick the one that feels closest. It doesn't have to be exact.</div>
+    <div class="option-group" id="cat-group">
+      <div class="option" data-val="Job search" onclick="selectOption('cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Job search</div><div class="option-desc">Finding a new role, positioning myself, navigating offers</div></div></div>
+      <div class="option" data-val="Career advancement" onclick="selectOption('cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Career advancement</div><div class="option-desc">Promotions, visibility, getting recognised for my work</div></div></div>
+      <div class="option" data-val="Career pivot or reinvention" onclick="selectOption('cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Career pivot or reinvention</div><div class="option-desc">Changing direction in role, industry, or way of working</div></div></div>
+      <div class="option" data-val="Difficult situation at work" onclick="selectOption('cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Difficult situation at work</div><div class="option-desc">Hard manager, team dynamics, conflict, politics, or bias</div></div></div>
+      <div class="option" data-val="Starting something" onclick="selectOption('cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Starting something</div><div class="option-desc">Launching a business, side project, or independent venture</div></div></div>
+      <div class="option" data-val="Big decision" onclick="selectOption('cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Big decision</div><div class="option-desc">A fork in the road I'm sitting with</div></div></div>
+      <div class="option" data-val="Work and life" onclick="selectOption('cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Work and life</div><div class="option-desc">Balancing career with family, caregiving, health, or personal priorities</div></div></div>
+      <div class="option" data-val="Burnout or sustainability" onclick="selectOption('cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Burnout or sustainability</div><div class="option-desc">Pace, energy, knowing when enough is enough</div></div></div>
+      <div class="option" data-val="Confidence or self-doubt" onclick="selectOption('cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Confidence or self-doubt</div><div class="option-desc">Imposter syndrome, second-guessing myself, knowing my worth</div></div></div>
+      <div class="option" data-val="Negotiation" onclick="selectOption('cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Negotiation</div><div class="option-desc">Salary, scope, title, flexibility, or conditions</div></div></div>
+      <div class="option" data-val="Being senior or in leadership" onclick="selectOption('cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Being senior or in leadership</div><div class="option-desc">Leading teams, managing up, navigating power dynamics</div></div></div>
+      <div class="option" data-val="Something else" onclick="selectOption('cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Something else</div><div class="option-desc">Doesn't quite fit. I'll explain in my question</div></div></div>
+    </div>
+    <div class="error-hint" id="err2">Please choose one before continuing.</div>
+    <div class="nav"><button class="btn-back" onclick="back(2)">Back</button><button class="btn-next" onclick="next(2)">Continue</button></div>
+  </div>
+
+  <!-- Step 4: Structured question -->
+  <div class="step" id="step3">
+    <div class="step-label">Step 4 of 9</div>
+    <div class="step-heading">Tell us what you're dealing with.</div>
+    <div class="step-sub">The more specific you are, the more useful the responses will be. Use your own words. There's no right way to fill this in.</div>
+    <div class="field-group">
+      <div class="field-row">
+        <div class="field-label">My situation</div>
+        <div class="field-hint">The context someone would need to understand where you're coming from</div>
+        <textarea class="textarea-md" id="q-situation" placeholder="e.g. I'm a consultant on a new team where all of my teammates are male. We are working intense hours and the pace is hard to keep up with."></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field-label">The problem or challenge</div>
+        <div class="field-hint">What's actually making this hard. What you're sitting with</div>
+        <textarea class="textarea-md" id="q-problem" placeholder="e.g. Late in the evening, my teammates start telling jokes to release stress and some of the comments feel uncomfortably misogynistic. I feel like saying something but I don't want to draw attention to being the only woman, or come across as difficult."></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field-label">What I'm looking for</div>
+        <div class="field-hint">Be specific. What would a useful response actually do for you?</div>
+        <textarea class="textarea-sm" id="q-goal" placeholder="e.g. I'd love to hear from women who have dealt with something similar. Help me think through whether to let this go or figure out a way to stand up without making things worse."></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Anything else worth knowing <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
+        <div class="field-hint">What you've already tried. Things that make your situation a bit different</div>
+        <textarea class="textarea-sm" id="q-context" placeholder="e.g. I've spoken with a couple of mentors at the firm and they don't seem to understand my concerns."></textarea>
+      </div>
+    </div>
+    <div class="error-hint" id="err3">Please fill in your situation, the challenge, and what you're looking for.</div>
+    <div class="nav"><button class="btn-back" onclick="back(3)">Back</button><button class="btn-next" onclick="next(3)">Continue</button></div>
+  </div>
+
+  <!-- Step 5: Response type -->
+  <div class="step" id="step4">
+    <div class="step-label">Step 5 of 9</div>
+    <div class="step-heading">What kind of response would be most useful?</div>
+    <div class="step-sub">Choose everything that applies. The women responding will use this as a guide, not a script.</div>
+    <div class="checkbox-group" id="resp-type-group">
+      <div class="check-option" onclick="toggleCheck(this)"><div class="check-box"></div><div class="option-text"><div class="option-label">Their personal experience</div><div class="option-desc">What happened when they faced something similar</div></div></div>
+      <div class="check-option" onclick="toggleCheck(this)"><div class="check-box"></div><div class="option-text"><div class="option-label">Concrete things I can do</div><div class="option-desc">Specific next steps or things worth trying</div></div></div>
+      <div class="check-option" onclick="toggleCheck(this)"><div class="check-box"></div><div class="option-text"><div class="option-label">A way of thinking about it</div><div class="option-desc">How they framed a similar situation and what shifted for them</div></div></div>
+      <div class="check-option" onclick="toggleCheck(this)"><div class="check-box"></div><div class="option-text"><div class="option-label">Questions to sit with</div><div class="option-desc">Things to help me think it through rather than tell me what to do</div></div></div>
+      <div class="check-option" onclick="toggleCheck(this)"><div class="check-box"></div><div class="option-text"><div class="option-label">A candid read on my situation</div><div class="option-desc">Honest perspective, even if it's not what I expect to hear</div></div></div>
+    </div>
+    <div class="error-hint" id="err4">Please choose at least one.</div>
+    <div class="nav"><button class="btn-back" onclick="back(4)">Back</button><button class="btn-next" onclick="next(4)">Continue</button></div>
+  </div>
+
+  <!-- Step 6: Format -->
+  <div class="step" id="step5">
+    <div class="step-label">Step 6 of 9</div>
+    <div class="step-heading">How would you prefer to receive responses?</div>
+    <div class="step-sub">We'll do our best to match this, though some women are more comfortable with one format than the other.</div>
+    <div class="option-group" id="format-group">
+      <div class="option" data-val="Voice notes" onclick="selectOption('format-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Voice notes</div><div class="option-desc">Short audio clips. More personal, easier to hear the tone</div></div></div>
+      <div class="option" data-val="Written responses" onclick="selectOption('format-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Written responses</div><div class="option-desc">Text I can read and come back to</div></div></div>
+      <div class="option" data-val="Either works" onclick="selectOption('format-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Either works</div><div class="option-desc">Whatever feels most natural for them</div></div></div>
+    </div>
+    <div class="error-hint" id="err5">Please choose one before continuing.</div>
+    <div class="nav"><button class="btn-back" onclick="back(5)">Back</button><button class="btn-next" onclick="next(5)">Continue</button></div>
+  </div>
+
+  <!-- Step 7: Reciprocity -->
+  <div class="step" id="step6">
+    <div class="step-label">Step 7 of 9</div>
+    <div class="step-heading">How would you like to give back?</div>
+    <div class="step-sub">This works because of reciprocity. Choose what feels right. There's no obligation and everything here is a gift either way.</div>
+    <div class="option-group" id="reciprocity-group">
+      <div class="option" data-val="Pay it forward" onclick="selectOption('reciprocity-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Pay it forward</div><div class="option-desc">When the time is right, I'll show up for someone a step behind me</div></div></div>
+      <div class="option" data-val="Ask what I can do for them" onclick="selectOption('reciprocity-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Ask what I can do for them</div><div class="option-desc">I'd like to reach out and offer something in return directly</div></div></div>
+      <div class="option" data-val="I'm open" onclick="selectOption('reciprocity-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">I'm open. Tell me what's most useful</div><div class="option-desc">Happy to contribute in whatever way makes sense</div></div></div>
+    </div>
+    <div class="error-hint" id="err6">Please choose one before continuing.</div>
+    <div class="nav"><button class="btn-back" onclick="back(6)">Back</button><button class="btn-next" onclick="next(6)">Continue</button></div>
+  </div>
+
+  <!-- Step 8: What I'd share -->
+  <div class="step" id="step7">
+    <div class="step-label">Step 8 of 9</div>
+    <div class="step-heading">What experiences would you be willing to share?</div>
+    <div class="step-sub">You asked a question today. One day, someone will need yours. Let us know where your experience could be useful so we can match you when the time comes. Choose as many as feel right.</div>
+    <div class="chip-grid" id="share-group">
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Job search</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Career advancement</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Career pivot</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Difficult situation at work</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Starting something</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Big decisions</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Work and life</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Burnout</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Confidence or self-doubt</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Negotiation</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Being in leadership</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Managing a team</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Being managed badly</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Workplace bias</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Returning after a break</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Parenting and career</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Caregiving and career</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Salary and compensation</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Changing industries</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Going independent</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Only woman in the room</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Finding your voice</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Knowing when to leave</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Relocating for work</div>
+      <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Working across cultures</div>
+    </div>
+    <div class="error-hint" id="err7">Please choose at least one area before continuing.</div>
+    <div class="nav"><button class="btn-back" onclick="back(7)">Back</button><button class="btn-next" onclick="next(7)">Continue</button></div>
+  </div>
+
+  <!-- Step 9: Contact -->
+  <div class="step" id="step8">
+    <div class="step-label">Step 9 of 9</div>
+    <div class="step-heading">Last thing. Where should we send the responses?</div>
+    <div class="step-sub">We'll use this to get back to you. Nothing else.</div>
+    <div class="field-group">
+      <div class="field-row">
+        <div class="field-label">Your email</div>
+        <input type="text" id="user-email" placeholder="you@example.com" />
+      </div>
+      <div class="field-row">
+        <div class="field-label">What should we call you? <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
+        <input type="text" id="user-name" placeholder="Your name or a pseudonym" />
+        <div class="name-note">You're welcome to use a pseudonym. The women responding will know you only by whatever name you share here.</div>
+      </div>
+    </div>
+    <div class="error-hint" id="err8">Please enter your email before submitting.</div>
+    <div class="nav">
+      <button class="btn-back" onclick="back(8)">Back</button>
+      <button class="btn-next" id="submit-btn" onclick="submit()">Send my question</button>
+    </div>
+    <div class="submitting-note" id="submitting-note">Sending your question...</div>
+  </div>
+
+  <!-- Thank you -->
+  <div class="thanks" id="thanks">
+    <div class="thanks-icon">✓</div>
+    <div class="thanks-heading">Your question is in.</div>
+    <div class="thanks-body">
+      <p>Thank you for being part of this. We'll do our best to match you with women whose experience is genuinely relevant to what you're navigating.</p>
+      <p>Because we're testing with a small group, matching may take longer than we'd like. We can't promise a specific timeline and that's part of what we're figuring out together. Please sit tight.</p>
+      <p>We genuinely appreciate your patience and your willingness to help us build something worth building.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ─── PASTE YOUR APPS SCRIPT URL HERE ───────────────────────────────────────
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUQmFiTSdSTHkOkh2dzh7tl2-SVtYJw4nFwdqtvXxDLwpoHvh09TD95hlaZvHh24rZ/exec";
+  // ───────────────────────────────────────────────────────────────────────────
+
+  const radioState = { 'who-group': null, 'cat-group': null, 'format-group': null, 'reciprocity-group': null };
+  let transitionOn = false;
+
+  function toggleTransition() {
+    transitionOn = !transitionOn;
+    document.getElementById('transition-toggle').classList.toggle('active', transitionOn);
+  }
+
+  function updateProgress(step) {
+    for (let i = 0; i < 9; i++) {
+      const p = document.getElementById('p' + i);
+      if (p) p.className = 'pip' + (i < step ? ' done' : i === step ? ' active' : '');
+    }
+  }
+
+  function startFlow() {
+    document.getElementById('intro').classList.remove('visible');
+    document.getElementById('progressBar').style.display = 'flex';
+    show(0);
+  }
+
+  function goIntro() {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
+    document.getElementById('progressBar').style.display = 'none';
+    document.getElementById('intro').classList.add('visible');
+    window.scrollTo(0, 0);
+  }
+
+  function show(idx) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
+    const el = document.getElementById('step' + idx);
+    if (el) el.classList.add('visible');
+    updateProgress(idx);
+    window.scrollTo(0, 0);
+  }
+
+  function selectOption(groupId, el) {
+    document.querySelectorAll('#' + groupId + ' .option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    radioState[groupId] = el.dataset.val;
+  }
+
+  function toggleCheck(el) { el.classList.toggle('selected'); }
+  function toggleChip(el) { el.classList.toggle('selected'); }
+
+  function validate(step) {
+    const errEl = document.getElementById('err' + step);
+    let valid = true;
+    if (step === 0) valid = document.getElementById('career-stage').value !== '';
+    else if (step === 1) valid = !!radioState['who-group'];
+    else if (step === 2) valid = !!radioState['cat-group'];
+    else if (step === 3) {
+      const s = document.getElementById('q-situation').value.trim();
+      const p = document.getElementById('q-problem').value.trim();
+      const g = document.getElementById('q-goal').value.trim();
+      valid = s.length > 5 && p.length > 5 && g.length > 5;
+    }
+    else if (step === 4) valid = document.querySelectorAll('#resp-type-group .check-option.selected').length > 0;
+    else if (step === 5) valid = !!radioState['format-group'];
+    else if (step === 6) valid = !!radioState['reciprocity-group'];
+    else if (step === 7) valid = document.querySelectorAll('#share-group .chip.selected').length > 0;
+    else if (step === 8) valid = document.getElementById('user-email').value.trim().includes('@');
+    if (errEl) errEl.className = 'error-hint' + (valid ? '' : ' visible');
+    return valid;
+  }
+
+  function next(step) {
+    if (!validate(step)) return;
+    show(step + 1);
+  }
+
+  function back(step) {
+    if (step === 1) { goIntro(); return; }
+    const errEl = document.getElementById('err' + (step - 1));
+    if (errEl) errEl.classList.remove('visible');
+    show(step - 1);
+  }
+
+  function collectData() {
+    const selectedChips = Array.from(document.querySelectorAll('#share-group .chip.selected')).map(c => c.textContent.trim()).join(', ');
+    const selectedRespTypes = Array.from(document.querySelectorAll('#resp-type-group .check-option.selected')).map(c => c.querySelector('.option-label').textContent.trim()).join(', ');
+    return {
+      email: document.getElementById('user-email').value.trim(),
+      name: document.getElementById('user-name').value.trim(),
+      careerStage: document.getElementById('career-stage').value,
+      inTransition: transitionOn ? 'yes' : 'no',
+      role: document.getElementById('career-role').value.trim(),
+      industry: document.getElementById('career-industry').value.trim(),
+      otherContext: document.getElementById('career-other').value.trim(),
+      whoToAsk: radioState['who-group'] || '',
+      category: radioState['cat-group'] || '',
+      situation: document.getElementById('q-situation').value.trim(),
+      problem: document.getElementById('q-problem').value.trim(),
+      lookingFor: document.getElementById('q-goal').value.trim(),
+      additionalContext: document.getElementById('q-context').value.trim(),
+      responseType: selectedRespTypes,
+      format: radioState['format-group'] || '',
+      reciprocity: radioState['reciprocity-group'] || '',
+      willingToShare: selectedChips
+    };
+  }
+
+  async function submit() {
+    if (!validate(8)) return;
+
+    const btn = document.getElementById('submit-btn');
+    const note = document.getElementById('submitting-note');
+    btn.disabled = true;
+    note.classList.add('visible');
+
+    const data = collectData();
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    } catch (err) {
+      // no-cors mode means we can't read the response — proceed to thank you regardless
+    }
+
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
+    document.getElementById('progressBar').style.display = 'none';
+    document.getElementById('thanks').classList.add('visible');
+    window.scrollTo(0, 0);
+  }
+
+  updateProgress(0);
+</script>
+</body>
+</html>

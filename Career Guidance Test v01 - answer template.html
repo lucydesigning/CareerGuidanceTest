@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Share your experience</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --text-primary: #1a1a18;
+    --text-secondary: #5f5e5a;
+    --text-muted: #888780;
+    --surface-0: #f1efe8;
+    --surface-1: #e8e6df;
+    --surface-2: #ffffff;
+    --border: rgba(26,26,24,0.12);
+    --border-strong: rgba(26,26,24,0.18);
+    --border-stronger: rgba(26,26,24,0.28);
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-voice: Georgia, "Times New Roman", serif;
+    --radius: 10px;
+    --green: #1d9e75;
+    --green-light: #e1f5ee;
+    --red: #c0392b;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--surface-0);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2rem 1rem 5rem;
+  }
+
+  .wrap { max-width: 600px; margin: 0 auto; }
+
+  /* ── Progress ── */
+  .progress-bar { display: flex; gap: 6px; margin-bottom: 2.5rem; }
+  .pip { height: 3px; flex: 1; border-radius: 2px; background: var(--border-strong); transition: background 0.3s; }
+  .pip.done { background: var(--text-primary); }
+  .pip.active { background: var(--text-secondary); }
+
+  /* ── Step shell ── */
+  .step { display: none; }
+  .step.visible { display: block; }
+  .step-label { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.6rem; }
+  .step-heading { font-family: var(--font-voice); font-size: 26px; font-weight: 400; line-height: 1.3; color: var(--text-primary); margin-bottom: 0.5rem; }
+  .step-sub { font-size: 14px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 2rem; }
+
+  /* ── Question card ── */
+  .question-card {
+    background: var(--surface-2);
+    border: 0.5px solid var(--border-strong);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .question-card-label {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 0.75rem;
+  }
+  .question-category {
+    display: inline-block; font-size: 12px; font-weight: 500;
+    color: var(--green); background: var(--green-light);
+    padding: 3px 10px; border-radius: 20px; margin-bottom: 0.75rem;
+  }
+  .question-situation { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 1rem; }
+  .question-block { margin-bottom: 0.85rem; }
+  .question-block:last-child { margin-bottom: 0; }
+  .question-block-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 0.25rem; }
+  .question-block-text { font-size: 14px; color: var(--text-primary); line-height: 1.65; }
+
+  /* ── Fields ── */
+  .field-group { display: flex; flex-direction: column; gap: 16px; margin-bottom: 2rem; }
+  .field-row { display: flex; flex-direction: column; }
+  .field-label { font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
+  .field-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; line-height: 1.5; }
+  .name-note { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-top: 6px; }
+
+  select, input[type="text"] {
+    width: 100%; padding: 12px 14px; font-family: var(--font-sans); font-size: 15px;
+    color: var(--text-primary); background: var(--surface-2);
+    border: 0.5px solid var(--border-strong); border-radius: var(--radius);
+    appearance: none; -webkit-appearance: none; transition: border-color 0.15s;
+  }
+  select:focus, input[type="text"]:focus { outline: none; border-color: var(--text-primary); }
+  .select-wrap { position: relative; }
+  .select-wrap::after {
+    content: ''; position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+    width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent;
+    border-top: 5px solid var(--text-muted); pointer-events: none;
+  }
+
+  .career-stage-row { display: flex; flex-direction: column; gap: 10px; }
+
+  .toggle-pill {
+    display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px;
+    border: 0.5px solid var(--border-strong); border-radius: var(--radius);
+    cursor: pointer; background: var(--surface-2); font-size: 14px;
+    color: var(--text-secondary); user-select: none; width: fit-content;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .toggle-pill:hover { border-color: var(--text-muted); }
+  .toggle-pill.active { border-color: var(--text-primary); background: var(--surface-1); color: var(--text-primary); }
+  .toggle-dot {
+    width: 16px; height: 16px; border-radius: 3px; border: 1.5px solid var(--border-stronger);
+    flex-shrink: 0; position: relative; transition: border-color 0.15s, background 0.15s;
+  }
+  .toggle-pill.active .toggle-dot { border-color: var(--text-primary); background: var(--text-primary); }
+  .toggle-pill.active .toggle-dot::after {
+    content: ''; position: absolute; top: 2px; left: 4px;
+    width: 5px; height: 8px; border: 1.5px solid #fff;
+    border-top: none; border-left: none; transform: rotate(45deg);
+  }
+
+  textarea {
+    width: 100%; padding: 14px 16px; font-family: var(--font-sans); font-size: 15px;
+    line-height: 1.6; color: var(--text-primary); background: var(--surface-2);
+    border: 0.5px solid var(--border-strong); border-radius: var(--radius);
+    resize: vertical; transition: border-color 0.15s;
+  }
+  textarea:focus { outline: none; border-color: var(--text-primary); }
+  textarea::placeholder { color: var(--text-muted); font-style: italic; font-size: 13px; }
+  .textarea-md { min-height: 140px; }
+  .textarea-sm { min-height: 90px; }
+
+  /* ── Option / checkbox ── */
+  .option-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 2rem; }
+  .option {
+    display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px;
+    border: 0.5px solid var(--border-strong); border-radius: var(--radius);
+    cursor: pointer; background: var(--surface-2); transition: border-color 0.15s, background 0.15s;
+  }
+  .option:hover { border-color: var(--text-muted); }
+  .option.selected { border-color: var(--text-primary); background: var(--surface-1); }
+  .option-dot {
+    width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--border-stronger);
+    flex-shrink: 0; margin-top: 1px; position: relative; transition: border-color 0.15s, background 0.15s;
+  }
+  .option.selected .option-dot { border-color: var(--text-primary); background: var(--text-primary); }
+  .option.selected .option-dot::after {
+    content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 6px; height: 6px; border-radius: 50%; background: #fff;
+  }
+  .option-text { flex: 1; }
+  .option-label { font-size: 15px; color: var(--text-primary); font-weight: 500; line-height: 1.3; }
+  .option-desc { font-size: 13px; color: var(--text-secondary); margin-top: 2px; line-height: 1.5; }
+
+  .chip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; margin-bottom: 2rem; }
+  .chip {
+    display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+    border: 0.5px solid var(--border-strong); border-radius: var(--radius);
+    cursor: pointer; font-size: 14px; color: var(--text-secondary);
+    background: var(--surface-2); user-select: none; line-height: 1.3;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  .chip:hover { border-color: var(--text-muted); color: var(--text-primary); }
+  .chip-check {
+    width: 16px; height: 16px; border-radius: 3px; border: 1.5px solid var(--border-stronger);
+    flex-shrink: 0; position: relative; transition: border-color 0.15s, background 0.15s;
+  }
+  .chip.selected { border-color: var(--text-primary); background: var(--text-primary); color: #fff; }
+  .chip.selected .chip-check { border-color: #fff; background: #fff; }
+  .chip.selected .chip-check::after {
+    content: ''; position: absolute; top: 2px; left: 4px;
+    width: 5px; height: 7px; border: 1.5px solid var(--text-primary);
+    border-top: none; border-left: none; transform: rotate(45deg);
+  }
+
+  /* ── Response format tabs ── */
+  .format-tabs { display: flex; gap: 10px; margin-bottom: 1.5rem; }
+  .format-tab {
+    flex: 1; padding: 14px 16px; border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius); cursor: pointer; background: var(--surface-2);
+    text-align: center; transition: border-color 0.15s, background 0.15s;
+  }
+  .format-tab:hover { border-color: var(--text-muted); }
+  .format-tab.active { border-color: var(--text-primary); background: var(--surface-1); }
+  .format-tab-label { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: 2px; }
+  .format-tab-desc { font-size: 12px; color: var(--text-secondary); }
+
+  .format-panel { display: none; }
+  .format-panel.visible { display: block; }
+
+  /* ── Voice recorder ── */
+  .voice-area {
+    background: var(--surface-2); border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1rem;
+  }
+  .voice-or { text-align: center; font-size: 13px; color: var(--text-muted); margin: 1rem 0; }
+
+  .recorder-controls { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+  .record-btn {
+    width: 64px; height: 64px; border-radius: 50%; border: none; cursor: pointer;
+    background: var(--text-primary); color: #fff; font-size: 24px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .record-btn:hover { opacity: 0.85; }
+  .record-btn.recording { background: var(--red); }
+  .record-btn:active { transform: scale(0.96); }
+
+  .record-status { font-size: 14px; color: var(--text-secondary); text-align: center; }
+  .record-timer { font-size: 22px; font-weight: 500; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+  .record-hint { font-size: 12px; color: var(--text-muted); text-align: center; }
+
+  .playback-area { margin-top: 1rem; display: none; }
+  .playback-area.visible { display: block; }
+  audio { width: 100%; border-radius: 8px; }
+
+  .download-btn {
+    display: block; width: 100%; margin-top: 0.75rem; padding: 11px 16px;
+    background: var(--surface-1); border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius); font-size: 14px; color: var(--text-secondary);
+    text-align: center; cursor: pointer; text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .download-btn:hover { border-color: var(--text-primary); color: var(--text-primary); }
+
+  .upload-area {
+    border: 1.5px dashed var(--border-stronger); border-radius: var(--radius);
+    padding: 1.5rem; text-align: center; cursor: pointer;
+    transition: border-color 0.15s, background 0.15s; background: var(--surface-2);
+  }
+  .upload-area:hover { border-color: var(--text-primary); background: var(--surface-1); }
+  .upload-area.has-file { border-style: solid; border-color: var(--text-primary); }
+  .upload-icon { font-size: 28px; margin-bottom: 0.5rem; color: var(--text-muted); }
+  .upload-label { font-size: 14px; color: var(--text-secondary); line-height: 1.5; }
+  .upload-filename { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-top: 0.5rem; }
+  #voice-file-input { display: none; }
+
+  .voice-send-note {
+    font-size: 13px; color: var(--text-muted); line-height: 1.6;
+    background: var(--surface-1); border-radius: var(--radius);
+    padding: 12px 14px; margin-top: 1rem;
+  }
+
+  /* ── Simplified ask flow (give back) ── */
+  .ask-flow { display: none; margin-top: 1.5rem; }
+  .ask-flow.visible { display: block; }
+  .ask-flow-heading { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: 0.5rem; }
+  .ask-flow-sub { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem; }
+
+  /* ── Nav ── */
+  .nav { display: flex; align-items: center; justify-content: space-between; margin-top: 2rem; }
+  .btn-back { font-size: 14px; color: var(--text-secondary); background: none; border: none; cursor: pointer; padding: 0; }
+  .btn-back:hover { color: var(--text-primary); }
+  .btn-next {
+    font-size: 15px; font-weight: 500; color: #fff; background: var(--text-primary);
+    border: none; border-radius: 8px; padding: 12px 28px; cursor: pointer; transition: opacity 0.15s;
+  }
+  .btn-next:hover { opacity: 0.85; }
+  .btn-next:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .error-hint { font-size: 12px; color: var(--red); margin-top: 8px; display: none; }
+  .error-hint.visible { display: block; }
+
+  .submitting-note { font-size: 13px; color: var(--text-muted); margin-top: 0.75rem; text-align: right; display: none; }
+  .submitting-note.visible { display: block; }
+
+  /* ── Thanks ── */
+  .thanks { display: none; }
+  .thanks.visible { display: block; padding: 3rem 0; }
+  .thanks-icon { font-size: 40px; margin-bottom: 1.5rem; text-align: center; }
+  .thanks-heading { font-family: var(--font-voice); font-size: 28px; font-weight: 400; color: var(--text-primary); margin-bottom: 1.25rem; text-align: center; }
+  .thanks-body { font-size: 15px; color: var(--text-secondary); line-height: 1.75; max-width: 440px; margin: 0 auto; }
+  .thanks-body p { margin-bottom: 1rem; }
+  .thanks-body p:last-child { margin-bottom: 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="progress-bar" id="progressBar">
+    <div class="pip" id="p0"></div>
+    <div class="pip" id="p1"></div>
+    <div class="pip" id="p2"></div>
+    <div class="pip" id="p3"></div>
+    <div class="pip" id="p4"></div>
+  </div>
+
+  <!-- ─── Step 1: Show the question ─────────────────────────────────────── -->
+  <div class="step visible" id="step0">
+    <div class="step-label">Step 1 of 5</div>
+    <div class="step-heading">Someone needs your experience.</div>
+    <div class="step-sub">We thought of you because of what you've been through. Here's what she's navigating.</div>
+
+    <div class="question-card">
+      <div class="question-card-label">The question</div>
+
+      <!-- ╔══════════════════════════════════════════════════════════════╗
+           ║  PASTE QUESTION DETAILS BELOW WHEN DUPLICATING THIS FILE   ║
+           ╚══════════════════════════════════════════════════════════════╝ -->
+
+      <div class="question-category" id="q-category">Career pivot or reinvention</div>
+
+      <div class="question-block">
+        <div class="question-block-label">Her situation</div>
+        <div class="question-block-text" id="q-situation">
+          Paste the asker's situation here.
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-block-label">The challenge</div>
+        <div class="question-block-text" id="q-challenge">
+          Paste the asker's challenge here.
+        </div>
+      </div>
+
+      <div class="question-block">
+        <div class="question-block-label">What she's looking for</div>
+        <div class="question-block-text" id="q-goal">
+          Paste what the asker is looking for here.
+        </div>
+      </div>
+
+      <!-- ╔══════════════════════════════════════════════════════════════╗
+           ║                    END OF QUESTION BLOCK                   ║
+           ╚══════════════════════════════════════════════════════════════╝ -->
+    </div>
+
+    <div class="nav">
+      <span></span>
+      <button class="btn-next" onclick="next(0)">I can help with this</button>
+    </div>
+  </div>
+
+  <!-- ─── Step 2: About you ──────────────────────────────────────────────── -->
+  <div class="step" id="step1">
+    <div class="step-label">Step 2 of 5</div>
+    <div class="step-heading">Tell us a little about yourself.</div>
+    <div class="step-sub">This helps us give her context about who she's hearing from — and helps us match you to future questions.</div>
+
+    <div class="field-group">
+      <div class="field-row">
+        <div class="field-label">Career stage</div>
+        <div class="career-stage-row">
+          <div class="select-wrap">
+            <select id="career-stage">
+              <option value="" disabled selected>Years of experience</option>
+              <option value="Early career (0 to 5 years)">Early career (0 to 5 years)</option>
+              <option value="Mid-career (5 to 15 years)">Mid-career (5 to 15 years)</option>
+              <option value="Senior (15 or more years)">Senior (15 or more years)</option>
+              <option value="Founder or self-employed">Founder or self-employed</option>
+            </select>
+          </div>
+          <div class="toggle-pill" id="transition-toggle" onclick="toggleTransition()">
+            <div class="toggle-dot"></div>
+            Currently in transition
+          </div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-label">Current or most recent role</div>
+        <input type="text" id="career-role" placeholder="e.g. VP of Marketing, Founder, Partner" />
+      </div>
+      <div class="field-row">
+        <div class="field-label">Industry</div>
+        <input type="text" id="career-industry" placeholder="e.g. Finance, Healthcare, Tech, Law" />
+      </div>
+    </div>
+    <div class="error-hint" id="err1">Please share at least your career stage before continuing.</div>
+    <div class="nav">
+      <button class="btn-back" onclick="back(1)">Back</button>
+      <button class="btn-next" onclick="next(1)">Continue</button>
+    </div>
+  </div>
+
+  <!-- ─── Step 3: Your response ──────────────────────────────────────────── -->
+  <div class="step" id="step2">
+    <div class="step-label">Step 3 of 5</div>
+    <div class="step-heading">Share your experience.</div>
+    <div class="step-sub">There's no right format. Write it out, record a voice note, or do both. Aim for 2 to 4 minutes of speaking or around 200 to 300 words if writing. The most useful responses start with a specific moment rather than general advice.</div>
+
+    <div class="format-tabs">
+      <div class="format-tab active" id="tab-write" onclick="switchFormat('write')">
+        <div class="format-tab-label">Write it</div>
+        <div class="format-tab-desc">Type your response</div>
+      </div>
+      <div class="format-tab" id="tab-voice" onclick="switchFormat('voice')">
+        <div class="format-tab-label">Record it</div>
+        <div class="format-tab-desc">Voice note in browser or upload</div>
+      </div>
+      <div class="format-tab" id="tab-both" onclick="switchFormat('both')">
+        <div class="format-tab-label">Both</div>
+        <div class="format-tab-desc">Written and voice</div>
+      </div>
+    </div>
+
+    <!-- Written panel -->
+    <div class="format-panel visible" id="panel-write">
+      <div class="field-hint">Start with a moment: "When I was in a similar place..." — then what happened, what you learned, and one thing you'd want her to sit with.</div>
+      <textarea class="textarea-md" id="written-response" placeholder="e.g. When I was a few years into consulting I found myself in almost exactly this situation. The thing that shifted for me was..."></textarea>
+    </div>
+
+    <!-- Voice panel -->
+    <div class="format-panel" id="panel-voice">
+      <div class="voice-area">
+
+        <!-- Browser recorder -->
+        <div class="recorder-controls" id="recorder-ui">
+          <div class="record-timer" id="timer">0:00</div>
+          <button class="record-btn" id="record-btn" onclick="toggleRecording()">&#9679;</button>
+          <div class="record-status" id="record-status">Press to start recording</div>
+          <div class="record-hint">Aim for 2 to 4 minutes. You can re-record as many times as you like.</div>
+        </div>
+
+        <div class="playback-area" id="playback-area">
+          <audio id="audio-playback" controls></audio>
+        </div>
+
+        <div class="voice-or">or</div>
+
+        <!-- Upload -->
+        <div class="upload-area" id="upload-area" onclick="document.getElementById('voice-file-input').click()">
+          <div class="upload-icon">&#8593;</div>
+          <div class="upload-label">Upload a voice memo you already have<br><span style="font-size:12px;">MP3, M4A, WAV, or any audio file</span></div>
+          <div class="upload-filename" id="upload-filename"></div>
+        </div>
+        <input type="file" id="voice-file-input" accept="audio/*" onchange="handleFileUpload(this)" />
+      </div>
+
+    </div>
+
+    <!-- Both panel -->
+    <div class="format-panel" id="panel-both">
+      <div class="field-hint" style="margin-bottom:1rem;">Written response first, then record or upload your voice note below.</div>
+      <textarea class="textarea-md" id="written-response-both" placeholder="e.g. When I was a few years into consulting I found myself in almost exactly this situation..."></textarea>
+
+      <div style="margin-top:1.5rem;" class="field-label">Voice note</div>
+      <div class="voice-area" style="margin-top:0.5rem;">
+        <div class="recorder-controls" id="recorder-ui-both">
+          <div class="record-timer" id="timer-both">0:00</div>
+          <button class="record-btn" id="record-btn-both" onclick="toggleRecordingBoth()">&#9679;</button>
+          <div class="record-status" id="record-status-both">Press to start recording</div>
+        </div>
+        <div class="playback-area" id="playback-area-both">
+          <audio id="audio-playback-both" controls></audio>
+        </div>
+        <div class="voice-or">or</div>
+        <div class="upload-area" id="upload-area-both" onclick="document.getElementById('voice-file-input-both').click()">
+          <div class="upload-icon">&#8593;</div>
+          <div class="upload-label">Upload a voice memo<br><span style="font-size:12px;">MP3, M4A, WAV, or any audio file</span></div>
+          <div class="upload-filename" id="upload-filename-both"></div>
+        </div>
+        <input type="file" id="voice-file-input-both" accept="audio/*" onchange="handleFileUploadBoth(this)" />
+      </div>
+    </div>
+
+    <div class="error-hint" id="err2">Please write your response or record a voice note before continuing.</div>
+    <div class="nav">
+      <button class="btn-back" onclick="back(2)">Back</button>
+      <button class="btn-next" onclick="next(2)">Continue</button>
+    </div>
+  </div>
+
+  <!-- ─── Step 4: Give back ──────────────────────────────────────────────── -->
+  <div class="step" id="step3">
+    <div class="step-label">Step 4 of 5</div>
+    <div class="step-heading">How would you like her to give back?</div>
+    <div class="step-sub">You're giving your time and experience freely. Let us know what feels right in return, if anything.</div>
+
+    <div class="option-group" id="giveback-group">
+      <div class="option" data-val="Pay it forward" onclick="selectOption('giveback-group', this)">
+        <div class="option-dot"></div>
+        <div class="option-text">
+          <div class="option-label">Pay it forward</div>
+          <div class="option-desc">When her time comes, she'll show up for someone a step behind her</div>
+        </div>
+      </div>
+      <div class="option" data-val="Ask her something" onclick="selectOption('giveback-group', this)">
+        <div class="option-dot"></div>
+        <div class="option-text">
+          <div class="option-label">Ask her something in return</div>
+          <div class="option-desc">There's something I'm navigating myself and I'd welcome her perspective</div>
+        </div>
+      </div>
+      <div class="option" data-val="No preference" onclick="selectOption('giveback-group', this)">
+        <div class="option-dot"></div>
+        <div class="option-text">
+          <div class="option-label">No preference</div>
+          <div class="option-desc">Happy to have helped. No expectation in return</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Simplified ask flow — shown if "Ask her something" selected -->
+    <div class="ask-flow" id="ask-flow">
+      <div class="ask-flow-heading">What would you like her perspective on?</div>
+      <div class="ask-flow-sub">Keep it brief. This will be shared with her alongside your response so she knows what you're navigating.</div>
+      <div class="field-group" style="margin-bottom:0;">
+        <div class="field-row">
+          <div class="field-label">The situation in brief</div>
+          <textarea class="textarea-sm" id="ask-situation" placeholder="e.g. I'm thinking about stepping back from a senior role to spend more time building something of my own..."></textarea>
+        </div>
+        <div class="field-row">
+          <div class="field-label">What you're looking for</div>
+          <textarea class="textarea-sm" id="ask-goal" placeholder="e.g. I'd love to hear how she thought about the financial and identity sides of making a move like this."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="error-hint" id="err3">Please choose one before continuing.</div>
+    <div class="nav">
+      <button class="btn-back" onclick="back(3)">Back</button>
+      <button class="btn-next" onclick="next(3)">Continue</button>
+    </div>
+  </div>
+
+  <!-- ─── Step 5: Other topics and contact ──────────────────────────────── -->
+  <div class="step" id="step4">
+    <div class="step-label">Step 5 of 5</div>
+    <div class="step-heading">Last few things.</div>
+    <div class="step-sub">We'd love to send you more questions when the right one comes along.</div>
+
+    <div class="field-group">
+      <div class="field-row">
+        <div class="field-label">Other topics you could speak to <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
+        <div class="field-hint">Beyond this question, what else have you navigated that you'd be willing to share?</div>
+        <div class="chip-grid" id="share-group">
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Job search</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Career advancement</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Career pivot</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Difficult situation at work</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Starting something</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Big decisions</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Work and life</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Burnout</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Confidence or self-doubt</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Negotiation</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Being in leadership</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Managing a team</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Being managed badly</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Workplace bias</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Returning after a break</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Parenting and career</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Caregiving and career</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Salary and compensation</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Changing industries</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Going independent</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Only woman in the room</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Finding your voice</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Knowing when to leave</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Relocating for work</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Working across cultures</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field-label">Your email</div>
+        <input type="text" id="user-email" placeholder="you@example.com" />
+      </div>
+      <div class="field-row">
+        <div class="field-label">What should we call you? <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
+        <input type="text" id="user-name" placeholder="Your name or a pseudonym" />
+        <div class="name-note">You're welcome to use a pseudonym. She'll know you only by whatever name you share here.</div>
+      </div>
+    </div>
+
+    <div class="error-hint" id="err4">Please enter your email before submitting.</div>
+    <div class="nav">
+      <button class="btn-back" onclick="back(4)">Back</button>
+      <button class="btn-next" id="submit-btn" onclick="submit()">Send my response</button>
+    </div>
+    <div class="submitting-note" id="submitting-note">Sending your response...</div>
+  </div>
+
+  <!-- ─── Thank you ──────────────────────────────────────────────────────── -->
+  <div class="thanks" id="thanks">
+    <div class="thanks-icon">✓</div>
+    <div class="thanks-heading">Thank you. Really.</div>
+    <div class="thanks-body">
+      <p>Your response is on its way. What you've shared will make a real difference to someone sitting with a genuinely hard question.</p>
+      <p>We'll be in touch if we have a question that's right for you.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUQmFiTSdSTHkOkh2dzh7tl2-SVtYJw4nFwdqtvXxDLwpoHvh09TD95hlaZvHh24rZ/exec";
+  const QUESTION_ID     = "Q001";
+  const QUESTION_CAT    = "Career pivot or reinvention";
+
+  const radioState = { 'giveback-group': null };
+  let transitionOn = false;
+  let currentFormat = 'write';
+
+  // Recorder state — main (voice panel)
+  let mediaRecorder = null, audioChunks = [], recordedBlob = null;
+  let timerInterval = null, seconds = 0, isRecording = false;
+
+  // Recorder state — both panel
+  let mediaRecorderBoth = null, audioChunksBoth = [], recordedBlobBoth = null;
+  let timerIntervalBoth = null, secondsBoth = 0, isRecordingBoth = false;
+
+  let voiceStatus = 'none';
+  let uploadedFile = null;
+  let voiceMemoUrl = '';
+
+  function toggleTransition() {
+    transitionOn = !transitionOn;
+    document.getElementById('transition-toggle').classList.toggle('active', transitionOn);
+  }
+
+  function updateProgress(step) {
+    for (let i = 0; i < 5; i++) {
+      const p = document.getElementById('p' + i);
+      if (p) p.className = 'pip' + (i < step ? ' done' : i === step ? ' active' : '');
+    }
+  }
+
+  function show(idx) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
+    const el = document.getElementById('step' + idx);
+    if (el) el.classList.add('visible');
+    updateProgress(idx);
+    window.scrollTo(0, 0);
+  }
+
+  function selectOption(groupId, el) {
+    document.querySelectorAll('#' + groupId + ' .option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    radioState[groupId] = el.dataset.val;
+    if (groupId === 'giveback-group') {
+      document.getElementById('ask-flow').classList.toggle('visible', el.dataset.val === 'Ask her something');
+    }
+  }
+
+  function toggleChip(el) { el.classList.toggle('selected'); }
+
+  function switchFormat(fmt) {
+    currentFormat = fmt;
+    ['write','voice','both'].forEach(f => {
+      document.getElementById('tab-' + f).classList.toggle('active', f === fmt);
+      document.getElementById('panel-' + f).classList.toggle('visible', f === fmt);
+    });
+  }
+
+  function formatTime(s) {
+    return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+  }
+
+  // ── Recorder helpers ────────────────────────────────────────────────────────
+
+  function setupRecorder(chunks, onStop) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mr = new MediaRecorder(stream);
+        mr.ondataavailable = e => chunks.push(e.data);
+        mr.onstop = () => {
+          const blob = new Blob(chunks, { type: 'audio/webm' });
+          onStop(blob, stream);
+        };
+        resolve(mr);
+      } catch(err) { reject(err); }
+    });
+  }
+
+  // ── Main recorder ───────────────────────────────────────────────────────────
+
+  async function toggleRecording() {
+    if (!isRecording) {
+      try {
+        audioChunks = [];
+        mediaRecorder = await setupRecorder(audioChunks, (blob, stream) => {
+          recordedBlob = blob;
+          stream.getTracks().forEach(t => t.stop());
+          const url = URL.createObjectURL(blob);
+          document.getElementById('audio-playback').src = url;
+          document.getElementById('playback-area').classList.add('visible');
+          document.getElementById('record-status').textContent = 'Recording saved. Press to re-record.';
+          voiceStatus = 'recorded';
+        });
+        mediaRecorder.start();
+        isRecording = true; seconds = 0;
+        document.getElementById('record-btn').classList.add('recording');
+        document.getElementById('record-btn').innerHTML = '&#9646;&#9646;';
+        document.getElementById('record-status').textContent = 'Recording... press to stop';
+        timerInterval = setInterval(() => { seconds++; document.getElementById('timer').textContent = formatTime(seconds); }, 1000);
+      } catch {
+        document.getElementById('record-status').textContent = 'Microphone access denied. Please allow access and try again.';
+      }
+    } else {
+      mediaRecorder.stop();
+      isRecording = false;
+      clearInterval(timerInterval);
+      document.getElementById('record-btn').classList.remove('recording');
+      document.getElementById('record-btn').innerHTML = '&#9679;';
+    }
+  }
+
+  function handleFileUpload(input) {
+    if (input.files.length > 0) {
+      uploadedFile = input.files[0];
+      document.getElementById('upload-filename').textContent = uploadedFile.name;
+      document.getElementById('upload-area').classList.add('has-file');
+      voiceStatus = 'uploaded';
+    }
+  }
+
+  // ── Both panel recorder ─────────────────────────────────────────────────────
+
+  async function toggleRecordingBoth() {
+    if (!isRecordingBoth) {
+      try {
+        audioChunksBoth = [];
+        mediaRecorderBoth = await setupRecorder(audioChunksBoth, (blob, stream) => {
+          recordedBlobBoth = blob;
+          stream.getTracks().forEach(t => t.stop());
+          const url = URL.createObjectURL(blob);
+          document.getElementById('audio-playback-both').src = url;
+          document.getElementById('playback-area-both').classList.add('visible');
+          document.getElementById('record-status-both').textContent = 'Recording saved. Press to re-record.';
+          voiceStatus = 'recorded';
+          recordedBlob = blob;
+        });
+        mediaRecorderBoth.start();
+        isRecordingBoth = true; secondsBoth = 0;
+        document.getElementById('record-btn-both').classList.add('recording');
+        document.getElementById('record-btn-both').innerHTML = '&#9646;&#9646;';
+        document.getElementById('record-status-both').textContent = 'Recording... press to stop';
+        timerIntervalBoth = setInterval(() => { secondsBoth++; document.getElementById('timer-both').textContent = formatTime(secondsBoth); }, 1000);
+      } catch {
+        document.getElementById('record-status-both').textContent = 'Microphone access denied. Please allow access and try again.';
+      }
+    } else {
+      mediaRecorderBoth.stop();
+      isRecordingBoth = false;
+      clearInterval(timerIntervalBoth);
+      document.getElementById('record-btn-both').classList.remove('recording');
+      document.getElementById('record-btn-both').innerHTML = '&#9679;';
+    }
+  }
+
+  function handleFileUploadBoth(input) {
+    if (input.files.length > 0) {
+      uploadedFile = input.files[0];
+      document.getElementById('upload-filename-both').textContent = uploadedFile.name;
+      document.getElementById('upload-area-both').classList.add('has-file');
+      voiceStatus = 'uploaded';
+      recordedBlob = null;
+    }
+  }
+
+  // ── Upload audio to Drive via Apps Script ───────────────────────────────────
+
+  async function uploadAudioToDrive(name) {
+    let blobToUpload = null;
+
+    if (voiceStatus === 'recorded' && recordedBlob) {
+      blobToUpload = recordedBlob;
+    } else if (voiceStatus === 'uploaded' && uploadedFile) {
+      blobToUpload = uploadedFile;
+    }
+
+    if (!blobToUpload) return '';
+
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result.split(',')[1];
+        try {
+          // Use no-cors — we can't read the response but the upload will succeed
+          await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              formType: 'voiceUpload',
+              audioBase64: base64,
+              questionId: QUESTION_ID,
+              name: name || 'anonymous'
+            })
+          });
+          // With no-cors we can't read fileUrl back, so flag it as uploaded
+          resolve('uploaded-to-drive');
+        } catch {
+          resolve('upload-failed');
+        }
+      };
+      reader.readAsDataURL(blobToUpload);
+    });
+  }
+
+  // ── Validation ──────────────────────────────────────────────────────────────
+
+  function validate(step) {
+    const errEl = document.getElementById('err' + step);
+    let valid = true;
+    if (step === 1) {
+      valid = document.getElementById('career-stage').value !== '';
+    } else if (step === 2) {
+      if (currentFormat === 'write') {
+        valid = document.getElementById('written-response').value.trim().length > 10;
+      } else if (currentFormat === 'voice') {
+        valid = voiceStatus !== 'none';
+      } else {
+        valid = document.getElementById('written-response-both').value.trim().length > 10;
+      }
+    } else if (step === 3) {
+      valid = !!radioState['giveback-group'];
+    } else if (step === 4) {
+      valid = document.getElementById('user-email').value.trim().includes('@');
+    }
+    if (errEl) errEl.className = 'error-hint' + (valid ? '' : ' visible');
+    return valid;
+  }
+
+  function next(step) {
+    if (step > 0 && !validate(step)) return;
+    show(step + 1);
+  }
+
+  function back(step) {
+    const errEl = document.getElementById('err' + (step - 1));
+    if (errEl) errEl.classList.remove('visible');
+    show(step - 1);
+  }
+
+  // ── Submit ──────────────────────────────────────────────────────────────────
+
+  async function submit() {
+    if (!validate(4)) return;
+
+    const btn = document.getElementById('submit-btn');
+    const note = document.getElementById('submitting-note');
+    btn.disabled = true;
+    note.classList.add('visible');
+
+    const name = document.getElementById('user-name').value.trim();
+
+    // Upload voice to Drive first if needed
+    const needsVoice = (currentFormat === 'voice' || currentFormat === 'both') && voiceStatus !== 'none';
+    if (needsVoice) {
+      note.textContent = 'Uploading your voice memo to Drive...';
+      voiceMemoUrl = await uploadAudioToDrive(name);
+    }
+
+    note.textContent = 'Sending your response...';
+
+    const chips = Array.from(document.querySelectorAll('#share-group .chip.selected')).map(c => c.textContent.trim()).join(', ');
+    const askSituation = document.getElementById('ask-situation').value.trim();
+    const askGoal = document.getElementById('ask-goal').value.trim();
+    const theirAsk = radioState['giveback-group'] === 'Ask her something'
+      ? ('Situation: ' + askSituation + ' | Looking for: ' + askGoal) : '';
+
+    let writtenResponse = '';
+    if (currentFormat === 'write') writtenResponse = document.getElementById('written-response').value.trim();
+    if (currentFormat === 'both') writtenResponse = document.getElementById('written-response-both').value.trim();
+
+    const payload = {
+      formType: 'answer',
+      questionId: QUESTION_ID,
+      questionCategory: QUESTION_CAT,
+      email: document.getElementById('user-email').value.trim(),
+      name: name,
+      careerStage: document.getElementById('career-stage').value,
+      inTransition: transitionOn ? 'yes' : 'no',
+      role: document.getElementById('career-role').value.trim(),
+      industry: document.getElementById('career-industry').value.trim(),
+      responseFormat: currentFormat,
+      writtenResponse: writtenResponse,
+      voiceMemoUrl: voiceMemoUrl,
+      giveBack: radioState['giveback-group'] || '',
+      theirAsk: theirAsk,
+      otherTopics: chips
+    };
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch {}
+
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
+    document.getElementById('progressBar').style.display = 'none';
+    document.getElementById('thanks').classList.add('visible');
+    window.scrollTo(0, 0);
+  }
+
+  updateProgress(0);
+</script>
+</body>
+</html>
