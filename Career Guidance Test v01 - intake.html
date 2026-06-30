@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -208,6 +209,13 @@
 
   .submitting-note { font-size: 13px; color: var(--text-muted); margin-top: 0.75rem; text-align: right; display: none; }
   .submitting-note.visible { display: block; }
+
+  .contact-note { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 2rem; }
+  .contact-note a { color: var(--text-secondary); text-decoration: underline; }
+  .contact-note a:hover { color: var(--text-primary); }
+  .intro-contact { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 1.5rem; }
+  .intro-contact a { color: var(--text-secondary); text-decoration: underline; }
+  .intro-contact a:hover { color: var(--text-primary); }
 </style>
 </head>
 <body>
@@ -223,6 +231,7 @@
     </div>
     <div class="divider"></div>
     <div class="nav" style="margin-top:0;"><span></span><button class="btn-next" onclick="startFlow()">Ask my question</button></div>
+    <div class="intro-contact">Technical issues? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form">Email lucydesigning@gmail.com</a></div>
   </div>
 
   <!-- Progress -->
@@ -436,6 +445,11 @@
         <input type="text" id="user-name" placeholder="Your name or a pseudonym" />
         <div class="name-note">You're welcome to use a pseudonym. The women responding will know you only by whatever name you share here.</div>
       </div>
+      <div class="field-row">
+        <div class="field-label">Any thoughts on this experience? <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
+        <div class="field-hint">We're still figuring this out. If anything felt confusing, slow, or could be better, we'd love to know.</div>
+        <textarea class="textarea-sm" id="user-feedback" placeholder="e.g. The questions about response format were a bit confusing, or I wasn't sure what counts as a good question..."></textarea>
+      </div>
     </div>
     <div class="error-hint" id="err8">Please enter your email before submitting.</div>
     <div class="nav">
@@ -443,6 +457,7 @@
       <button class="btn-next" id="submit-btn" onclick="submit()">Send my question</button>
     </div>
     <div class="submitting-note" id="submitting-note">Sending your question...</div>
+    <div class="contact-note">Having a technical issue with this form? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form">Email lucydesigning@gmail.com</a></div>
   </div>
 
   <!-- Thank you -->
@@ -460,7 +475,7 @@
 
 <script>
   // ─── PASTE YOUR APPS SCRIPT URL HERE ───────────────────────────────────────
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxUQmFiTSdSTHkOkh2dzh7tl2-SVtYJw4nFwdqtvXxDLwpoHvh09TD95hlaZvHh24rZ/exec";
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwNsDpaJELKwTrZ3btIrzzhJcAZkABxm5o685Mz0lnDTxC4BplD9pd81ixzt6IDHe4-AQ/exec";
   // ───────────────────────────────────────────────────────────────────────────
 
   const radioState = { 'who-group': null, 'cat-group': null, 'format-group': null, 'reciprocity-group': null };
@@ -561,7 +576,8 @@
       responseType: selectedRespTypes,
       format: radioState['format-group'] || '',
       reciprocity: radioState['reciprocity-group'] || '',
-      willingToShare: selectedChips
+      willingToShare: selectedChips,
+      feedback: document.getElementById('user-feedback').value.trim()
     };
   }
 
