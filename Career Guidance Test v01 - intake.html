@@ -216,6 +216,139 @@
   .intro-contact { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 1.5rem; }
   .intro-contact a { color: var(--text-secondary); text-decoration: underline; }
   .intro-contact a:hover { color: var(--text-primary); }
+  .privacy-note {
+    background: var(--surface-1);
+    border: 0.5px solid var(--border-strong);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 2rem;
+  }
+
+  .privacy-note strong {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .review-section {
+    border: 0.5px solid var(--border-strong);
+    border-radius: 12px;
+    background: var(--surface-2);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .review-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+  }
+
+  .review-section-label {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .review-edit-btn {
+    font-size: 13px;
+    color: var(--text-secondary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px 0;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-color: var(--border-stronger);
+  }
+  .review-edit-btn:hover { color: var(--text-primary); }
+
+  .review-summary {
+    padding: 0 16px 14px;
+  }
+
+  .review-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 8px;
+  }
+  .review-row:last-child { margin-bottom: 0; }
+
+  .review-field-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+
+  .review-value {
+    font-size: 14px;
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  .review-value.empty {
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* Inline edit panel inside review section */
+  .review-edit-panel {
+    display: none;
+    border-top: 0.5px solid var(--border);
+    padding: 16px;
+    background: var(--surface-0);
+  }
+
+  .review-edit-panel.open {
+    display: block;
+  }
+
+  .review-edit-panel .field-group {
+    margin-bottom: 1rem;
+  }
+
+  .review-edit-panel .option-group,
+  .review-edit-panel .checkbox-group,
+  .review-edit-panel .chip-grid {
+    margin-bottom: 1rem;
+  }
+
+  .review-save-btn {
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    background: var(--text-primary);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    margin-top: 4px;
+  }
+  .review-save-btn:hover { opacity: 0.85; }
+
+  /* ── Thank you ── */
+  .thanks { display: none; }
+  .thanks.visible { display: block; padding: 3rem 0; }
+  .thanks-icon { font-size: 40px; margin-bottom: 1.5rem; text-align: center; }
+  .thanks-heading { font-family: var(--font-voice); font-size: 28px; font-weight: 400; color: var(--text-primary); margin-bottom: 1.25rem; text-align: center; }
+  .thanks-body { font-size: 15px; color: var(--text-secondary); line-height: 1.75; max-width: 440px; margin: 0 auto; }
+  .thanks-body p { margin-bottom: 1rem; }
+  .thanks-body p:last-child { margin-bottom: 0; }
+
+  .submitting-note { font-size: 13px; color: var(--text-muted); margin-top: 0.75rem; text-align: right; display: none; }
+  .submitting-note.visible { display: block; }
+
+  .ask-flow { display: none; }
+  .ask-flow.visible { display: block; }
 </style>
 </head>
 <body>
@@ -230,22 +363,26 @@
       <p>Because you're part of an early test, matching may take longer than we'd like. We appreciate your patience and your willingness to help us figure this out.</p>
     </div>
     <div class="divider"></div>
-    <div class="nav" style="margin-top:0;"><span></span><button class="btn-next" onclick="startFlow()">Ask my question</button></div>
-    <div class="intro-contact">Technical issues? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form">Email lucydesigning@gmail.com</a></div>
+    <div style="text-align:center;margin-top:0;"><button class="btn-next" onclick="startFlow()">Ask my question</button></div>
+    <div class="privacy-note" style="margin-top:1.25rem;">
+      <strong>Your privacy.</strong> You can share as much or as little as you're comfortable with. What you share here will only be viewable by Lucy and those whom Lucy will be manually routing your questions to for answers. A pseudonym is completely fine. Your email is only used to send you their responses and is never shown to the women responding. You will be able to review everything before submitting.
+    </div>
+    <div class="intro-contact" style="margin-top:1rem;font-size:12px;color:var(--text-muted);text-align:center;">Technical issues? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form" style="color:var(--text-secondary);">Email lucydesigning@gmail.com</a></div>
   </div>
 
   <!-- Progress -->
   <div class="progress-bar" id="progressBar" style="display:none;">
     <div class="pip" id="p0"></div><div class="pip" id="p1"></div><div class="pip" id="p2"></div>
     <div class="pip" id="p3"></div><div class="pip" id="p4"></div><div class="pip" id="p5"></div>
-    <div class="pip" id="p6"></div><div class="pip" id="p7"></div><div class="pip" id="p8"></div>
+    <div class="pip" id="p6"></div><div class="pip" id="p7"></div><div class="pip" id="p8"></div><div class="pip" id="p9"></div>
   </div>
 
   <!-- Step 1: Career context -->
-  <div class="step" id="step0">
-    <div class="step-label">Step 1 of 9</div>
+  <div class="step" id="step0" style="display:none;">
+    <div class="step-label">Step 1 of 10</div>
     <div class="step-heading">Tell us a little about where you are in your career.</div>
     <div class="step-sub">This helps us find women whose path and industry are closest to yours.</div>
+    <div style="font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:1.5rem;">Share as little or as much as you're comfortable with. What you enter here will only be seen by Lucy and the women she routes your question to.</div>
     <div class="field-group">
       <div class="field-row">
         <div class="field-label">Career stage</div>
@@ -280,11 +417,12 @@
     </div>
     <div class="error-hint" id="err0">Please share at least your career stage before continuing.</div>
     <div class="nav"><button class="btn-back" onclick="goIntro()">Back</button><button class="btn-next" onclick="next(0)">Continue</button></div>
+    <div class="contact-note" style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:1.5rem;">Technical issue? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form" style="color:var(--text-secondary);">Email lucydesigning@gmail.com</a></div>
   </div>
 
   <!-- Step 2: Who to ask -->
-  <div class="step" id="step1">
-    <div class="step-label">Step 2 of 9</div>
+  <div class="step" id="step1" style="display:none;">
+    <div class="step-label">Step 2 of 10</div>
     <div class="step-heading">Who would you like to hear from?</div>
     <div class="step-sub">There's no wrong answer here. This helps us find the right women for your question.</div>
     <div class="option-group" id="who-group">
@@ -294,11 +432,12 @@
     </div>
     <div class="error-hint" id="err1">Please choose one before continuing.</div>
     <div class="nav"><button class="btn-back" onclick="back(1)">Back</button><button class="btn-next" onclick="next(1)">Continue</button></div>
+    <div class="contact-note" style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:1.5rem;">Technical issue? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form" style="color:var(--text-secondary);">Email lucydesigning@gmail.com</a></div>
   </div>
 
   <!-- Step 3: Category -->
-  <div class="step" id="step2">
-    <div class="step-label">Step 3 of 9</div>
+  <div class="step" id="step2" style="display:none;">
+    <div class="step-label">Step 3 of 10</div>
     <div class="step-heading">What kind of situation are you navigating?</div>
     <div class="step-sub">Pick the one that feels closest. It doesn't have to be exact.</div>
     <div class="option-group" id="cat-group">
@@ -317,13 +456,14 @@
     </div>
     <div class="error-hint" id="err2">Please choose one before continuing.</div>
     <div class="nav"><button class="btn-back" onclick="back(2)">Back</button><button class="btn-next" onclick="next(2)">Continue</button></div>
+    <div class="contact-note" style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:1.5rem;">Technical issue? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form" style="color:var(--text-secondary);">Email lucydesigning@gmail.com</a></div>
   </div>
 
   <!-- Step 4: Structured question -->
-  <div class="step" id="step3">
-    <div class="step-label">Step 4 of 9</div>
+  <div class="step" id="step3" style="display:none;">
+    <div class="step-label">Step 4 of 10</div>
     <div class="step-heading">Tell us what you're dealing with.</div>
-    <div class="step-sub">The more specific you are, the more useful the responses will be. Use your own words. There's no right way to fill this in.</div>
+    <div class="step-sub">The more specific you can make this, the better the chance someone can help you with insights that actually fit your situation. That said, you decide what you're comfortable sharing.</div>
     <div class="field-group">
       <div class="field-row">
         <div class="field-label">My situation</div>
@@ -348,11 +488,12 @@
     </div>
     <div class="error-hint" id="err3">Please fill in your situation, the challenge, and what you're looking for.</div>
     <div class="nav"><button class="btn-back" onclick="back(3)">Back</button><button class="btn-next" onclick="next(3)">Continue</button></div>
+    <div class="contact-note" style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:1.5rem;">Technical issue? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form" style="color:var(--text-secondary);">Email lucydesigning@gmail.com</a></div>
   </div>
 
   <!-- Step 5: Response type -->
-  <div class="step" id="step4">
-    <div class="step-label">Step 5 of 9</div>
+  <div class="step" id="step4" style="display:none;">
+    <div class="step-label">Step 5 of 10</div>
     <div class="step-heading">What kind of response would be most useful?</div>
     <div class="step-sub">Choose everything that applies. The women responding will use this as a guide, not a script.</div>
     <div class="checkbox-group" id="resp-type-group">
@@ -364,11 +505,12 @@
     </div>
     <div class="error-hint" id="err4">Please choose at least one.</div>
     <div class="nav"><button class="btn-back" onclick="back(4)">Back</button><button class="btn-next" onclick="next(4)">Continue</button></div>
+    <div class="contact-note" style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:1.5rem;">Technical issue? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form" style="color:var(--text-secondary);">Email lucydesigning@gmail.com</a></div>
   </div>
 
   <!-- Step 6: Format -->
-  <div class="step" id="step5">
-    <div class="step-label">Step 6 of 9</div>
+  <div class="step" id="step5" style="display:none;">
+    <div class="step-label">Step 6 of 10</div>
     <div class="step-heading">How would you prefer to receive responses?</div>
     <div class="step-sub">We'll do our best to match this, though some women are more comfortable with one format than the other.</div>
     <div class="option-group" id="format-group">
@@ -378,11 +520,12 @@
     </div>
     <div class="error-hint" id="err5">Please choose one before continuing.</div>
     <div class="nav"><button class="btn-back" onclick="back(5)">Back</button><button class="btn-next" onclick="next(5)">Continue</button></div>
+    <div class="contact-note" style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:1.5rem;">Technical issue? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form" style="color:var(--text-secondary);">Email lucydesigning@gmail.com</a></div>
   </div>
 
   <!-- Step 7: Reciprocity -->
-  <div class="step" id="step6">
-    <div class="step-label">Step 7 of 9</div>
+  <div class="step" id="step6" style="display:none;">
+    <div class="step-label">Step 7 of 10</div>
     <div class="step-heading">How would you like to give back?</div>
     <div class="step-sub">This works because of reciprocity. Choose what feels right. There's no obligation and everything here is a gift either way.</div>
     <div class="option-group" id="reciprocity-group">
@@ -392,11 +535,12 @@
     </div>
     <div class="error-hint" id="err6">Please choose one before continuing.</div>
     <div class="nav"><button class="btn-back" onclick="back(6)">Back</button><button class="btn-next" onclick="next(6)">Continue</button></div>
+    <div class="contact-note" style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:1.5rem;">Technical issue? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form" style="color:var(--text-secondary);">Email lucydesigning@gmail.com</a></div>
   </div>
 
   <!-- Step 8: What I'd share -->
-  <div class="step" id="step7">
-    <div class="step-label">Step 8 of 9</div>
+  <div class="step" id="step7" style="display:none;">
+    <div class="step-label">Step 8 of 10</div>
     <div class="step-heading">What experiences would you be willing to share?</div>
     <div class="step-sub">You asked a question today. One day, someone will need yours. Let us know where your experience could be useful so we can match you when the time comes. Choose as many as feel right.</div>
     <div class="chip-grid" id="share-group">
@@ -428,22 +572,24 @@
     </div>
     <div class="error-hint" id="err7">Please choose at least one area before continuing.</div>
     <div class="nav"><button class="btn-back" onclick="back(7)">Back</button><button class="btn-next" onclick="next(7)">Continue</button></div>
+    <div class="contact-note" style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:1.5rem;">Technical issue? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form" style="color:var(--text-secondary);">Email lucydesigning@gmail.com</a></div>
   </div>
 
   <!-- Step 9: Contact -->
-  <div class="step" id="step8">
-    <div class="step-label">Step 9 of 9</div>
+  <div class="step" id="step8" style="display:none;">
+    <div class="step-label">Step 9 of 10</div>
     <div class="step-heading">Last thing. Where should we send the responses?</div>
     <div class="step-sub">We'll use this to get back to you. Nothing else.</div>
     <div class="field-group">
       <div class="field-row">
         <div class="field-label">Your email</div>
         <input type="text" id="user-email" placeholder="you@example.com" />
+        <div class="name-note">Used only to send you their responses. Never shared with anyone.</div>
       </div>
       <div class="field-row">
         <div class="field-label">What should we call you? <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
-        <input type="text" id="user-name" placeholder="Your name or a pseudonym" />
-        <div class="name-note">You're welcome to use a pseudonym. The women responding will know you only by whatever name you share here.</div>
+        <input type="text" id="user-name" placeholder="Your name or a pseudonym, either is fine" />
+        <div class="name-note">A pseudonym is completely fine. The women responding will only know you by this name.</div>
       </div>
       <div class="field-row">
         <div class="field-label">Any thoughts on this experience? <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
@@ -454,14 +600,250 @@
     <div class="error-hint" id="err8">Please enter your email before submitting.</div>
     <div class="nav">
       <button class="btn-back" onclick="back(8)">Back</button>
+      <button class="btn-next" onclick="next(8)">Review my question</button>
+    </div>
+    <div class="contact-note" style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:1.5rem;">Technical issue? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form" style="color:var(--text-secondary);">Email lucydesigning@gmail.com</a></div>
+  </div>
+
+
+  <!-- Step 10: Review -->
+  <div class="step" id="step9" style="display:none;">
+    <div class="step-label">Step 10 of 10</div>
+    <div class="step-heading">Does everything look right?</div>
+    <div class="step-sub">Review what you've shared. Edit anything directly here before you send.</div>
+
+    <!-- Section A: About you -->
+    <div class="review-section" id="rs-career">
+      <div class="review-section-header">
+        <div class="review-section-label">About you</div>
+        <button class="review-edit-btn" onclick="toggleEdit('career')">Edit</button>
+      </div>
+      <div class="review-summary" id="rv-career"></div>
+      <div class="review-edit-panel" id="ep-career">
+        <div class="field-group">
+          <div class="field-row">
+            <div class="field-label">Career stage</div>
+            <div class="career-stage-row">
+              <div class="select-wrap">
+                <select id="r-career-stage">
+                  <option value="" disabled>Years of experience</option>
+                  <option value="Early career (0 to 5 years)">Early career (0 to 5 years)</option>
+                  <option value="Mid-career (5 to 15 years)">Mid-career (5 to 15 years)</option>
+                  <option value="Senior (15 or more years)">Senior (15 or more years)</option>
+                  <option value="Founder or self-employed">Founder or self-employed</option>
+                </select>
+              </div>
+              <div class="toggle-pill" id="r-transition-toggle" onclick="toggleTransitionReview()">
+                <div class="toggle-dot"></div>
+                Currently in transition
+              </div>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-label">Role <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
+            <input type="text" id="r-career-role" />
+          </div>
+          <div class="field-row">
+            <div class="field-label">Industry <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
+            <input type="text" id="r-career-industry" />
+          </div>
+          <div class="field-row">
+            <div class="field-label">Anything else <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
+            <input type="text" id="r-career-other" />
+          </div>
+        </div>
+        <button class="review-save-btn" onclick="saveEdit('career')">Save</button>
+      </div>
+    </div>
+
+    <!-- Section B: Who to hear from -->
+    <div class="review-section" id="rs-who">
+      <div class="review-section-header">
+        <div class="review-section-label">Who to hear from</div>
+        <button class="review-edit-btn" onclick="toggleEdit('who')">Edit</button>
+      </div>
+      <div class="review-summary" id="rv-who"></div>
+      <div class="review-edit-panel" id="ep-who">
+        <div class="option-group" id="r-who-group">
+          <div class="option" data-val="Women further along than me" onclick="selectOption('r-who-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Women further along than me</div></div></div>
+          <div class="option" data-val="Women at a similar stage" onclick="selectOption('r-who-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Women at a similar stage</div></div></div>
+          <div class="option" data-val="No preference" onclick="selectOption('r-who-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">No preference</div></div></div>
+        </div>
+        <button class="review-save-btn" onclick="saveEdit('who')">Save</button>
+      </div>
+    </div>
+
+    <!-- Section C: Situation type -->
+    <div class="review-section" id="rs-cat">
+      <div class="review-section-header">
+        <div class="review-section-label">Situation type</div>
+        <button class="review-edit-btn" onclick="toggleEdit('cat')">Edit</button>
+      </div>
+      <div class="review-summary" id="rv-cat"></div>
+      <div class="review-edit-panel" id="ep-cat">
+        <div class="option-group" id="r-cat-group">
+          <div class="option" data-val="Job search" onclick="selectOption('r-cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Job search</div></div></div>
+          <div class="option" data-val="Career advancement" onclick="selectOption('r-cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Career advancement</div></div></div>
+          <div class="option" data-val="Career pivot or reinvention" onclick="selectOption('r-cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Career pivot or reinvention</div></div></div>
+          <div class="option" data-val="Difficult situation at work" onclick="selectOption('r-cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Difficult situation at work</div></div></div>
+          <div class="option" data-val="Starting something" onclick="selectOption('r-cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Starting something</div></div></div>
+          <div class="option" data-val="Big decision" onclick="selectOption('r-cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Big decision</div></div></div>
+          <div class="option" data-val="Work and life" onclick="selectOption('r-cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Work and life</div></div></div>
+          <div class="option" data-val="Burnout or sustainability" onclick="selectOption('r-cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Burnout or sustainability</div></div></div>
+          <div class="option" data-val="Confidence or self-doubt" onclick="selectOption('r-cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Confidence or self-doubt</div></div></div>
+          <div class="option" data-val="Negotiation" onclick="selectOption('r-cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Negotiation</div></div></div>
+          <div class="option" data-val="Being senior or in leadership" onclick="selectOption('r-cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Being senior or in leadership</div></div></div>
+          <div class="option" data-val="Something else" onclick="selectOption('r-cat-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Something else</div></div></div>
+        </div>
+        <button class="review-save-btn" onclick="saveEdit('cat')">Save</button>
+      </div>
+    </div>
+
+    <!-- Section D: Your question -->
+    <div class="review-section" id="rs-question">
+      <div class="review-section-header">
+        <div class="review-section-label">Your question</div>
+        <button class="review-edit-btn" onclick="toggleEdit('question')">Edit</button>
+      </div>
+      <div class="review-summary" id="rv-question"></div>
+      <div class="review-edit-panel" id="ep-question">
+        <div class="field-group">
+          <div class="field-row">
+            <div class="field-label">My situation</div>
+            <textarea class="textarea-md" id="r-q-situation"></textarea>
+          </div>
+          <div class="field-row">
+            <div class="field-label">The problem or challenge</div>
+            <textarea class="textarea-md" id="r-q-problem"></textarea>
+          </div>
+          <div class="field-row">
+            <div class="field-label">What I'm looking for</div>
+            <textarea class="textarea-sm" id="r-q-goal"></textarea>
+          </div>
+          <div class="field-row">
+            <div class="field-label">Anything else <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
+            <textarea class="textarea-sm" id="r-q-context"></textarea>
+          </div>
+        </div>
+        <button class="review-save-btn" onclick="saveEdit('question')">Save</button>
+      </div>
+    </div>
+
+    <!-- Section E: Response preferences -->
+    <div class="review-section" id="rs-prefs">
+      <div class="review-section-header">
+        <div class="review-section-label">Response preferences</div>
+        <button class="review-edit-btn" onclick="toggleEdit('prefs')">Edit</button>
+      </div>
+      <div class="review-summary" id="rv-prefs"></div>
+      <div class="review-edit-panel" id="ep-prefs">
+        <div class="field-label" style="margin-bottom:10px;">What kind of response</div>
+        <div class="checkbox-group" id="r-resp-type-group" style="margin-bottom:1.25rem;">
+          <div class="check-option" onclick="toggleCheck(this)"><div class="check-box"></div><div class="option-text"><div class="option-label">Their personal experience</div></div></div>
+          <div class="check-option" onclick="toggleCheck(this)"><div class="check-box"></div><div class="option-text"><div class="option-label">Concrete things I can do</div></div></div>
+          <div class="check-option" onclick="toggleCheck(this)"><div class="check-box"></div><div class="option-text"><div class="option-label">A way of thinking about it</div></div></div>
+          <div class="check-option" onclick="toggleCheck(this)"><div class="check-box"></div><div class="option-text"><div class="option-label">Questions to sit with</div></div></div>
+          <div class="check-option" onclick="toggleCheck(this)"><div class="check-box"></div><div class="option-text"><div class="option-label">A candid read on my situation</div></div></div>
+        </div>
+        <div class="field-label" style="margin-bottom:10px;">Format</div>
+        <div class="option-group" id="r-format-group" style="margin-bottom:0;">
+          <div class="option" data-val="Voice notes" onclick="selectOption('r-format-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Voice notes</div></div></div>
+          <div class="option" data-val="Written responses" onclick="selectOption('r-format-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Written responses</div></div></div>
+          <div class="option" data-val="Either works" onclick="selectOption('r-format-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Either works</div></div></div>
+        </div>
+        <button class="review-save-btn" onclick="saveEdit('prefs')" style="margin-top:1rem;">Save</button>
+      </div>
+    </div>
+
+    <!-- Section F: Reciprocity -->
+    <div class="review-section" id="rs-recip">
+      <div class="review-section-header">
+        <div class="review-section-label">Giving back</div>
+        <button class="review-edit-btn" onclick="toggleEdit('recip')">Edit</button>
+      </div>
+      <div class="review-summary" id="rv-recip"></div>
+      <div class="review-edit-panel" id="ep-recip">
+        <div class="option-group" id="r-reciprocity-group">
+          <div class="option" data-val="Pay it forward" onclick="selectOption('r-reciprocity-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Pay it forward</div></div></div>
+          <div class="option" data-val="Ask what I can do for them" onclick="selectOption('r-reciprocity-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">Ask what I can do for them</div></div></div>
+          <div class="option" data-val="I'm open" onclick="selectOption('r-reciprocity-group',this)"><div class="option-dot"></div><div class="option-text"><div class="option-label">I'm open. Tell me what's most useful</div></div></div>
+        </div>
+        <button class="review-save-btn" onclick="saveEdit('recip')">Save</button>
+      </div>
+    </div>
+
+    <!-- Section G: Areas you'd share -->
+    <div class="review-section" id="rs-share">
+      <div class="review-section-header">
+        <div class="review-section-label">Areas you'd share</div>
+        <button class="review-edit-btn" onclick="toggleEdit('share')">Edit</button>
+      </div>
+      <div class="review-summary" id="rv-share"></div>
+      <div class="review-edit-panel" id="ep-share">
+        <div class="chip-grid" id="r-share-group">
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Job search</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Career advancement</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Career pivot</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Difficult situation at work</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Starting something</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Big decisions</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Work and life</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Burnout</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Confidence or self-doubt</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Negotiation</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Being in leadership</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Managing a team</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Being managed badly</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Workplace bias</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Returning after a break</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Parenting and career</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Caregiving and career</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Salary and compensation</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Changing industries</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Going independent</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Only woman in the room</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Finding your voice</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Knowing when to leave</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Relocating for work</div>
+          <div class="chip" onclick="toggleChip(this)"><div class="chip-check"></div>Working across cultures</div>
+        </div>
+        <button class="review-save-btn" onclick="saveEdit('share')" style="margin-top:0.5rem;">Save</button>
+      </div>
+    </div>
+
+    <!-- Section H: Contact -->
+    <div class="review-section" id="rs-contact">
+      <div class="review-section-header">
+        <div class="review-section-label">Your contact</div>
+        <button class="review-edit-btn" onclick="toggleEdit('contact')">Edit</button>
+      </div>
+      <div class="review-summary" id="rv-contact"></div>
+      <div class="review-edit-panel" id="ep-contact">
+        <div class="field-group">
+          <div class="field-row">
+            <div class="field-label">Email</div>
+            <input type="text" id="r-user-email" />
+          </div>
+          <div class="field-row">
+            <div class="field-label">Name or pseudonym <span style="font-weight:400;color:var(--text-muted);">(optional)</span></div>
+            <input type="text" id="r-user-name" />
+          </div>
+        </div>
+        <button class="review-save-btn" onclick="saveEdit('contact')">Save</button>
+      </div>
+    </div>
+
+    <div class="error-hint" id="err9" style="margin-bottom:1rem;"></div>
+    <div class="nav">
+      <button class="btn-back" onclick="back(9)">Back</button>
       <button class="btn-next" id="submit-btn" onclick="submit()">Send my question</button>
     </div>
     <div class="submitting-note" id="submitting-note">Sending your question...</div>
-    <div class="contact-note">Having a technical issue with this form? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form">Email lucydesigning@gmail.com</a></div>
+    <div class="contact-note" style="font-size:12px;color:var(--text-muted);text-align:center;margin-top:1.5rem;">Technical issue? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form" style="color:var(--text-secondary);">Email lucydesigning@gmail.com</a></div>
   </div>
 
   <!-- Thank you -->
-  <div class="thanks" id="thanks">
+  <div class="thanks" id="thanks" style="display:none;">
     <div class="thanks-icon">✓</div>
     <div class="thanks-heading">Your question is in.</div>
     <div class="thanks-body">
@@ -474,24 +856,25 @@
 </div>
 
 <script>
-  // ─── PASTE YOUR APPS SCRIPT URL HERE ───────────────────────────────────────
   const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwNsDpaJELKwTrZ3btIrzzhJcAZkABxm5o685Mz0lnDTxC4BplD9pd81ixzt6IDHe4-AQ/exec";
-  // ───────────────────────────────────────────────────────────────────────────
 
-  const radioState = { 'who-group': null, 'cat-group': null, 'format-group': null, 'reciprocity-group': null };
+  const radioState = {
+    'who-group': null, 'cat-group': null, 'format-group': null, 'reciprocity-group': null,
+    'r-who-group': null, 'r-cat-group': null, 'r-format-group': null, 'r-reciprocity-group': null
+  };
   let transitionOn = false;
+  let transitionOnReview = false;
 
-  function toggleTransition() {
-    transitionOn = !transitionOn;
-    document.getElementById('transition-toggle').classList.toggle('active', transitionOn);
-  }
+  // ── Progress ────────────────────────────────────────────────────────────────
 
   function updateProgress(step) {
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 10; i++) {
       const p = document.getElementById('p' + i);
       if (p) p.className = 'pip' + (i < step ? ' done' : i === step ? ' active' : '');
     }
   }
+
+  // ── Navigation ──────────────────────────────────────────────────────────────
 
   function startFlow() {
     document.getElementById('intro').classList.remove('visible');
@@ -500,18 +883,46 @@
   }
 
   function goIntro() {
-    document.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.step').forEach(s => { s.classList.remove('visible'); s.style.display = 'none'; });
     document.getElementById('progressBar').style.display = 'none';
     document.getElementById('intro').classList.add('visible');
     window.scrollTo(0, 0);
   }
 
   function show(idx) {
-    document.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.step').forEach(s => { s.classList.remove('visible'); s.style.display = 'none'; });
     const el = document.getElementById('step' + idx);
-    if (el) el.classList.add('visible');
+    if (el) { el.classList.add('visible'); el.style.display = 'block'; }
     updateProgress(idx);
     window.scrollTo(0, 0);
+  }
+
+  function next(step) {
+    if (!validate(step)) return;
+    if (step === 8) {
+      // Sync contact fields to review, then populate the whole review
+      populateReview();
+    }
+    show(step + 1);
+  }
+
+  function back(step) {
+    if (step === 1) { goIntro(); return; }
+    const errEl = document.getElementById('err' + (step - 1));
+    if (errEl) errEl.classList.remove('visible');
+    show(step - 1);
+  }
+
+  // ── Controls ─────────────────────────────────────────────────────────────────
+
+  function toggleTransition() {
+    transitionOn = !transitionOn;
+    document.getElementById('transition-toggle').classList.toggle('active', transitionOn);
+  }
+
+  function toggleTransitionReview() {
+    transitionOnReview = !transitionOnReview;
+    document.getElementById('r-transition-toggle').classList.toggle('active', transitionOnReview);
   }
 
   function selectOption(groupId, el) {
@@ -522,6 +933,8 @@
 
   function toggleCheck(el) { el.classList.toggle('selected'); }
   function toggleChip(el) { el.classList.toggle('selected'); }
+
+  // ── Validation ───────────────────────────────────────────────────────────────
 
   function validate(step) {
     const errEl = document.getElementById('err' + step);
@@ -544,17 +957,222 @@
     return valid;
   }
 
-  function next(step) {
-    if (!validate(step)) return;
-    show(step + 1);
+  // ── Review: populate ─────────────────────────────────────────────────────────
+
+  function populateReview() {
+    // Sync all wizard data into the review edit fields so they're live
+    // Career
+    document.getElementById('r-career-stage').value = document.getElementById('career-stage').value;
+    transitionOnReview = transitionOn;
+    document.getElementById('r-transition-toggle').classList.toggle('active', transitionOnReview);
+    document.getElementById('r-career-role').value = document.getElementById('career-role').value;
+    document.getElementById('r-career-industry').value = document.getElementById('career-industry').value;
+    document.getElementById('r-career-other').value = document.getElementById('career-other').value;
+
+    // Who
+    syncRadioToReview('who-group', 'r-who-group');
+
+    // Category
+    syncRadioToReview('cat-group', 'r-cat-group');
+
+    // Question
+    document.getElementById('r-q-situation').value = document.getElementById('q-situation').value;
+    document.getElementById('r-q-problem').value = document.getElementById('q-problem').value;
+    document.getElementById('r-q-goal').value = document.getElementById('q-goal').value;
+    document.getElementById('r-q-context').value = document.getElementById('q-context').value;
+
+    // Response type checkboxes
+    const srcChecked = Array.from(document.querySelectorAll('#resp-type-group .check-option.selected'))
+      .map(el => el.querySelector('.option-label').textContent.trim());
+    document.querySelectorAll('#r-resp-type-group .check-option').forEach(el => {
+      const label = el.querySelector('.option-label').textContent.trim();
+      el.classList.toggle('selected', srcChecked.includes(label));
+    });
+
+    // Format
+    syncRadioToReview('format-group', 'r-format-group');
+
+    // Reciprocity
+    syncRadioToReview('reciprocity-group', 'r-reciprocity-group');
+
+    // Chips
+    const srcChips = Array.from(document.querySelectorAll('#share-group .chip.selected'))
+      .map(el => el.textContent.trim());
+    document.querySelectorAll('#r-share-group .chip').forEach(el => {
+      el.classList.toggle('selected', srcChips.includes(el.textContent.trim()));
+    });
+
+    // Contact
+    document.getElementById('r-user-email').value = document.getElementById('user-email').value;
+    document.getElementById('r-user-name').value = document.getElementById('user-name').value;
+
+    // Render all summaries
+    renderAllSummaries();
   }
 
-  function back(step) {
-    if (step === 1) { goIntro(); return; }
-    const errEl = document.getElementById('err' + (step - 1));
-    if (errEl) errEl.classList.remove('visible');
-    show(step - 1);
+  function syncRadioToReview(srcGroup, destGroup) {
+    const val = radioState[srcGroup];
+    radioState[destGroup] = val;
+    document.querySelectorAll('#' + destGroup + ' .option').forEach(o => {
+      o.classList.toggle('selected', o.dataset.val === val);
+    });
   }
+
+  // ── Review: render summaries ──────────────────────────────────────────────────
+
+  function renderAllSummaries() {
+    renderCareerSummary();
+    renderWhoSummary();
+    renderCatSummary();
+    renderQuestionSummary();
+    renderPrefsSummary();
+    renderRecipSummary();
+    renderShareSummary();
+    renderContactSummary();
+  }
+
+  function val(id) { return document.getElementById(id).value.trim(); }
+  function rv(label, text) {
+    if (!text) return `<div class="review-row"><div class="review-field-label">${label}</div><div class="review-value empty">Not provided</div></div>`;
+    return `<div class="review-row"><div class="review-field-label">${label}</div><div class="review-value">${text}</div></div>`;
+  }
+
+  function renderCareerSummary() {
+    const stage = val('r-career-stage');
+    const transition = document.getElementById('r-transition-toggle').classList.contains('active');
+    const role = val('r-career-role');
+    const industry = val('r-career-industry');
+    const other = val('r-career-other');
+    let html = rv('Career stage', stage + (transition ? ' · Currently in transition' : ''));
+    html += rv('Role', role);
+    html += rv('Industry', industry);
+    if (other) html += rv('Other context', other);
+    document.getElementById('rv-career').innerHTML = html;
+  }
+
+  function renderWhoSummary() {
+    document.getElementById('rv-who').innerHTML = rv('Preference', radioState['r-who-group']);
+  }
+
+  function renderCatSummary() {
+    document.getElementById('rv-cat').innerHTML = rv('Type', radioState['r-cat-group']);
+  }
+
+  function renderQuestionSummary() {
+    let html = rv('My situation', val('r-q-situation'));
+    html += rv('The challenge', val('r-q-problem'));
+    html += rv('What I\'m looking for', val('r-q-goal'));
+    const ctx = val('r-q-context');
+    if (ctx) html += rv('Anything else', ctx);
+    document.getElementById('rv-question').innerHTML = html;
+  }
+
+  function renderPrefsSummary() {
+    const types = Array.from(document.querySelectorAll('#r-resp-type-group .check-option.selected'))
+      .map(el => el.querySelector('.option-label').textContent.trim()).join(', ');
+    let html = rv('Kind of response', types);
+    html += rv('Format', radioState['r-format-group']);
+    document.getElementById('rv-prefs').innerHTML = html;
+  }
+
+  function renderRecipSummary() {
+    document.getElementById('rv-recip').innerHTML = rv('How I\'d like to give back', radioState['r-reciprocity-group']);
+  }
+
+  function renderShareSummary() {
+    const chips = Array.from(document.querySelectorAll('#r-share-group .chip.selected'))
+      .map(el => el.textContent.trim()).join(', ');
+    document.getElementById('rv-share').innerHTML = rv('Areas', chips);
+  }
+
+  function renderContactSummary() {
+    let html = rv('Email', val('r-user-email'));
+    const name = val('r-user-name');
+    html += rv('Name', name || '(none — that\'s fine)');
+    document.getElementById('rv-contact').innerHTML = html;
+  }
+
+  // ── Review: inline edit toggle ────────────────────────────────────────────────
+
+  function toggleEdit(section) {
+    const panel = document.getElementById('ep-' + section);
+    const isOpen = panel.classList.contains('open');
+    // Close all panels first
+    document.querySelectorAll('.review-edit-panel').forEach(p => p.classList.remove('open'));
+    document.querySelectorAll('.review-edit-btn').forEach(b => b.textContent = 'Edit');
+    if (!isOpen) {
+      panel.classList.add('open');
+      document.querySelector('#rs-' + section + ' .review-edit-btn').textContent = 'Cancel';
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  // ── Review: save edits ────────────────────────────────────────────────────────
+
+  function saveEdit(section) {
+    // Write review field values back to the canonical wizard fields
+    if (section === 'career') {
+      document.getElementById('career-stage').value = document.getElementById('r-career-stage').value;
+      transitionOn = transitionOnReview;
+      document.getElementById('transition-toggle').classList.toggle('active', transitionOn);
+      document.getElementById('career-role').value = document.getElementById('r-career-role').value;
+      document.getElementById('career-industry').value = document.getElementById('r-career-industry').value;
+      document.getElementById('career-other').value = document.getElementById('r-career-other').value;
+      renderCareerSummary();
+    } else if (section === 'who') {
+      radioState['who-group'] = radioState['r-who-group'];
+      syncRadioToWizard('r-who-group', 'who-group');
+      renderWhoSummary();
+    } else if (section === 'cat') {
+      radioState['cat-group'] = radioState['r-cat-group'];
+      syncRadioToWizard('r-cat-group', 'cat-group');
+      renderCatSummary();
+    } else if (section === 'question') {
+      document.getElementById('q-situation').value = document.getElementById('r-q-situation').value;
+      document.getElementById('q-problem').value = document.getElementById('r-q-problem').value;
+      document.getElementById('q-goal').value = document.getElementById('r-q-goal').value;
+      document.getElementById('q-context').value = document.getElementById('r-q-context').value;
+      renderQuestionSummary();
+    } else if (section === 'prefs') {
+      // Sync checkboxes back
+      const rLabels = Array.from(document.querySelectorAll('#r-resp-type-group .check-option.selected'))
+        .map(el => el.querySelector('.option-label').textContent.trim());
+      document.querySelectorAll('#resp-type-group .check-option').forEach(el => {
+        el.classList.toggle('selected', rLabels.includes(el.querySelector('.option-label').textContent.trim()));
+      });
+      radioState['format-group'] = radioState['r-format-group'];
+      syncRadioToWizard('r-format-group', 'format-group');
+      renderPrefsSummary();
+    } else if (section === 'recip') {
+      radioState['reciprocity-group'] = radioState['r-reciprocity-group'];
+      syncRadioToWizard('r-reciprocity-group', 'reciprocity-group');
+      renderRecipSummary();
+    } else if (section === 'share') {
+      const rChips = Array.from(document.querySelectorAll('#r-share-group .chip.selected'))
+        .map(el => el.textContent.trim());
+      document.querySelectorAll('#share-group .chip').forEach(el => {
+        el.classList.toggle('selected', rChips.includes(el.textContent.trim()));
+      });
+      renderShareSummary();
+    } else if (section === 'contact') {
+      document.getElementById('user-email').value = document.getElementById('r-user-email').value;
+      document.getElementById('user-name').value = document.getElementById('r-user-name').value;
+      renderContactSummary();
+    }
+
+    // Close the panel
+    document.getElementById('ep-' + section).classList.remove('open');
+    document.querySelector('#rs-' + section + ' .review-edit-btn').textContent = 'Edit';
+  }
+
+  function syncRadioToWizard(srcGroup, destGroup) {
+    const val = radioState[srcGroup];
+    document.querySelectorAll('#' + destGroup + ' .option').forEach(o => {
+      o.classList.toggle('selected', o.dataset.val === val);
+    });
+  }
+
+  // ── Data collection ──────────────────────────────────────────────────────────
 
   function collectData() {
     const selectedChips = Array.from(document.querySelectorAll('#share-group .chip.selected')).map(c => c.textContent.trim()).join(', ');
@@ -576,13 +1194,21 @@
       responseType: selectedRespTypes,
       format: radioState['format-group'] || '',
       reciprocity: radioState['reciprocity-group'] || '',
-      willingToShare: selectedChips,
-      feedback: document.getElementById('user-feedback').value.trim()
+      willingToShare: selectedChips
     };
   }
 
+  // ── Submit ───────────────────────────────────────────────────────────────────
+
   async function submit() {
-    if (!validate(8)) return;
+    const email = document.getElementById('user-email').value.trim();
+    const errEl = document.getElementById('err9');
+    if (!email.includes('@')) {
+      errEl.textContent = 'Please check your email address before submitting.';
+      errEl.className = 'error-hint visible';
+      return;
+    }
+    errEl.className = 'error-hint';
 
     const btn = document.getElementById('submit-btn');
     const note = document.getElementById('submitting-note');
@@ -599,12 +1225,12 @@
         body: JSON.stringify(data)
       });
     } catch (err) {
-      // no-cors mode means we can't read the response — proceed to thank you regardless
+      // no-cors means we can't read the response — proceed to thank you regardless
     }
 
-    document.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.step').forEach(s => { s.classList.remove('visible'); s.style.display = 'none'; });
     document.getElementById('progressBar').style.display = 'none';
-    document.getElementById('thanks').classList.add('visible');
+    document.getElementById('thanks').style.display = 'block'; document.getElementById('thanks').classList.add('visible');
     window.scrollTo(0, 0);
   }
 
