@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -274,12 +275,15 @@
               <option value="Early career (0 to 5 years)">Early career (0 to 5 years)</option>
               <option value="Mid-career (5 to 15 years)">Mid-career (5 to 15 years)</option>
               <option value="Senior (15 or more years)">Senior (15 or more years)</option>
-              <option value="Founder or self-employed">Founder or self-employed</option>
             </select>
           </div>
           <div class="toggle-pill" id="transition-toggle" onclick="toggleTransition()">
             <div class="toggle-dot"></div>
             Currently in transition
+          </div>
+          <div class="toggle-pill" id="founder-toggle" onclick="toggleFounder()">
+            <div class="toggle-dot"></div>
+            Founder or self-employed
           </div>
         </div>
       </div>
@@ -457,18 +461,19 @@
     <div class="thanks-body">
       <p>What you shared will reach someone who is sitting with a hard question. She will hear from a few different women, each from their own angle, and yours may spark something she has not been able to put words to yet.</p>
       <p>We are grateful you said yes. When you find yourself in a place of needing help, we hope you come back.</p>
-      <p style="text-align:center; margin-top:1.5rem;"><a href="https://lucydesigning.github.io/CareerGuidanceTest/Career%20Guidance%20Test%20v01%20-%20intake.html" style="display:inline-block; padding:11px 22px; background:var(--accent); color:#fff; border-radius:8px; font-size:14px; font-weight:500; text-decoration:none;">Ask your own question</a></p>
+      <p style="text-align:center; margin-top:1.5rem;"><a id="ask-own-link" href="https://lucydesigning.github.io/CareerGuidanceTest/Career%20Guidance%20Test%20v01%20-%20intake.html" style="display:inline-block; padding:11px 22px; background:var(--accent); color:#fff; border-radius:8px; font-size:14px; font-weight:500; text-decoration:none;">Ask your own question</a></p>
     </div>
   </div>
 
 </div>
 
 <script>
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwNsDpaJELKwTrZ3btIrzzhJcAZkABxm5o685Mz0lnDTxC4BplD9pd81ixzt6IDHe4-AQ/exec";
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTh625KloAOli6edcNijmLZ3ZuoHcV0oVkyvV6vdA05N2AKSQZf09NHctbSeqs6GpBOw/exec";
   const QUESTION_ID     = "Q006";
   const QUESTION_CAT    = "Career development and identity";
 
   let transitionOn = false;
+  let founderOn = false;
   let currentFormat = 'voice';
   let mediaRecorder = null, audioChunks = [], recordedBlob = null;
   let timerInterval = null, seconds = 0, isRecording = false;
@@ -493,6 +498,11 @@
   function toggleTransition() {
     transitionOn = !transitionOn;
     document.getElementById('transition-toggle').classList.toggle('active', transitionOn);
+  }
+
+  function toggleFounder() {
+    founderOn = !founderOn;
+    document.getElementById('founder-toggle').classList.toggle('active', founderOn);
   }
 
   function updateProgress(step) {
@@ -626,6 +636,7 @@
           email: document.getElementById('user-email').value.trim(), name,
           careerStage: document.getElementById('career-stage').value,
           inTransition: transitionOn ? 'yes' : 'no',
+          isFounder: founderOn ? 'yes' : 'no',
           role: document.getElementById('career-role').value.trim(),
           industry: document.getElementById('career-industry').value.trim(),
           responseFormat: currentFormat,
@@ -635,6 +646,24 @@
         })
       });
     } catch {}
+
+    // Carry this responder's info forward into the "ask your own question" link,
+    // so the intake form can offer to reuse it instead of asking again.
+    const askLink = document.getElementById('ask-own-link');
+    if (askLink) {
+      const carryParams = new URLSearchParams({
+        src: 'answer',
+        careerStage: document.getElementById('career-stage').value,
+        inTransition: transitionOn ? 'yes' : 'no',
+        isFounder: founderOn ? 'yes' : 'no',
+        role: document.getElementById('career-role').value.trim(),
+        industry: document.getElementById('career-industry').value.trim(),
+        email: document.getElementById('user-email').value.trim(),
+        name: name,
+        shareTopics: chips
+      });
+      askLink.href = askLink.href.split('?')[0] + '?' + carryParams.toString();
+    }
 
     document.querySelectorAll('.step').forEach(s => s.classList.remove('visible'));
     document.getElementById('progressBar').style.display = 'none';
