@@ -371,6 +371,22 @@
     <div class="intro-contact" style="margin-top:1rem;font-size:12px;color:var(--text-muted);text-align:center;">Technical issues? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form" style="color:var(--text-secondary);">Email lucydesigning@gmail.com</a></div>
   </div>
 
+  <!-- Carry-over: shown only when arriving from the answer flow with info to reuse -->
+  <div class="intro" id="carryover">
+    <div class="intro-heading">Welcome back.</div>
+    <div class="intro-body">
+      <p>You just shared a few things about yourself when you answered someone else's question. No need to type them again — here's what we'd carry over. Sound right?</p>
+    </div>
+    <div class="review-section" style="margin-bottom:1.5rem;">
+      <div class="review-summary" id="carryover-summary" style="padding:16px;"></div>
+    </div>
+    <div class="nav" style="margin-top:0;">
+      <button class="btn-back" onclick="declineCarryover()">Start fresh</button>
+      <button class="btn-next" onclick="acceptCarryover()">Sounds right — continue</button>
+    </div>
+    <div class="intro-contact" style="margin-top:1.5rem;font-size:12px;color:var(--text-muted);text-align:center;">Technical issues? <a href="mailto:lucydesigning@gmail.com?subject=Issue with question form" style="color:var(--text-secondary);">Email lucydesigning@gmail.com</a></div>
+  </div>
+
   <!-- Progress -->
   <div class="progress-bar" id="progressBar" style="display:none;">
     <div class="pip" id="p0"></div><div class="pip" id="p1"></div><div class="pip" id="p2"></div>
@@ -874,6 +890,33 @@
   let founderOn = false;
   let founderOnReview = false;
 
+  // ── Carry-over from the answer flow ──────────────────────────────────────────
+  // If someone just answered a question and clicked "Ask your own question",
+  // their responder info arrives here as URL params so we can offer to reuse it
+  // instead of asking for it again.
+
+  function getCarryFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('src') !== 'answer') return null;
+    const c = {
+      careerStage: params.get('careerStage') || '',
+      inTransition: params.get('inTransition') || 'no',
+      isFounder: params.get('isFounder') || 'no',
+      role: params.get('role') || '',
+      industry: params.get('industry') || '',
+      email: params.get('email') || '',
+      name: params.get('name') || '',
+      shareTopics: params.get('shareTopics') || ''
+    };
+    // Only worth offering if there's actually something to reuse
+    const hasContent = c.careerStage || c.role || c.industry || c.email || c.shareTopics;
+    return hasContent ? c : null;
+  }
+
+  const carry = getCarryFromURL();
+  let carryoverChoiceMade = false;
+  let carryoverAccepted = false;
+
   // ── Progress ────────────────────────────────────────────────────────────────
 
   function updateProgress(step) {
@@ -887,15 +930,82 @@
 
   function startFlow() {
     document.getElementById('intro').classList.remove('visible');
+    if (carry && !carryoverChoiceMade) {
+      showCarryoverCard();
+      return;
+    }
     document.getElementById('progressBar').style.display = 'flex';
-    show(0);
+    show(carryoverAccepted ? 1 : 0);
   }
 
   function goIntro() {
     document.querySelectorAll('.step').forEach(s => { s.classList.remove('visible'); s.style.display = 'none'; });
+    document.getElementById('carryover').classList.remove('visible');
     document.getElementById('progressBar').style.display = 'none';
     document.getElementById('intro').classList.add('visible');
     window.scrollTo(0, 0);
+  }
+
+  // ── Carry-over card ───────────────────────────────────────────────────────────
+
+  function showCarryoverCard() {
+    renderCarryoverSummary();
+    document.getElementById('carryover').classList.add('visible');
+    window.scrollTo(0, 0);
+  }
+
+  function renderCarryoverSummary() {
+    let extras = [];
+    if (carry.inTransition === 'yes') extras.push('Currently in transition');
+    if (carry.isFounder === 'yes') extras.push('Founder or self-employed');
+    const stage = carry.careerStage + (extras.length ? ' · ' + extras.join(' · ') : '');
+    let html = '';
+    html += rv('Career stage', stage);
+    html += rv('Role', carry.role);
+    html += rv('Industry', carry.industry);
+    if (carry.shareTopics) html += rv('Areas you could speak to', carry.shareTopics);
+    html += rv('Email', carry.email);
+    if (carry.name) html += rv('Name', carry.name);
+    document.getElementById('carryover-summary').innerHTML = html;
+  }
+
+  function applyCarryover() {
+    if (carry.careerStage) document.getElementById('career-stage').value = carry.careerStage;
+    if (carry.inTransition === 'yes') {
+      transitionOn = true;
+      document.getElementById('transition-toggle').classList.add('active');
+    }
+    if (carry.isFounder === 'yes') {
+      founderOn = true;
+      document.getElementById('founder-toggle').classList.add('active');
+    }
+    if (carry.role) document.getElementById('career-role').value = carry.role;
+    if (carry.industry) document.getElementById('career-industry').value = carry.industry;
+    if (carry.email) document.getElementById('user-email').value = carry.email;
+    if (carry.name) document.getElementById('user-name').value = carry.name;
+    if (carry.shareTopics) {
+      const topics = carry.shareTopics.split(',').map(t => t.trim()).filter(Boolean);
+      document.querySelectorAll('#share-group .chip').forEach(chip => {
+        if (topics.includes(chip.textContent.trim())) chip.classList.add('selected');
+      });
+    }
+  }
+
+  function acceptCarryover() {
+    applyCarryover();
+    carryoverAccepted = true;
+    carryoverChoiceMade = true;
+    document.getElementById('carryover').classList.remove('visible');
+    document.getElementById('progressBar').style.display = 'flex';
+    show(1);
+  }
+
+  function declineCarryover() {
+    carryoverAccepted = false;
+    carryoverChoiceMade = true;
+    document.getElementById('carryover').classList.remove('visible');
+    document.getElementById('progressBar').style.display = 'flex';
+    show(0);
   }
 
   function show(idx) {
