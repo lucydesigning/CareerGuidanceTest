@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -393,12 +394,15 @@
               <option value="Early career (0 to 5 years)">Early career (0 to 5 years)</option>
               <option value="Mid-career (5 to 15 years)">Mid-career (5 to 15 years)</option>
               <option value="Senior (15 or more years)">Senior (15 or more years)</option>
-              <option value="Founder or self-employed">Founder or self-employed</option>
             </select>
           </div>
           <div class="toggle-pill" id="transition-toggle" onclick="toggleTransition()">
             <div class="toggle-dot"></div>
             Currently in transition
+          </div>
+          <div class="toggle-pill" id="founder-toggle" onclick="toggleFounder()">
+            <div class="toggle-dot"></div>
+            Founder or self-employed
           </div>
         </div>
       </div>
@@ -630,12 +634,15 @@
                   <option value="Early career (0 to 5 years)">Early career (0 to 5 years)</option>
                   <option value="Mid-career (5 to 15 years)">Mid-career (5 to 15 years)</option>
                   <option value="Senior (15 or more years)">Senior (15 or more years)</option>
-                  <option value="Founder or self-employed">Founder or self-employed</option>
                 </select>
               </div>
               <div class="toggle-pill" id="r-transition-toggle" onclick="toggleTransitionReview()">
                 <div class="toggle-dot"></div>
                 Currently in transition
+              </div>
+              <div class="toggle-pill" id="r-founder-toggle" onclick="toggleFounderReview()">
+                <div class="toggle-dot"></div>
+                Founder or self-employed
               </div>
             </div>
           </div>
@@ -856,7 +863,7 @@
 </div>
 
 <script>
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwNsDpaJELKwTrZ3btIrzzhJcAZkABxm5o685Mz0lnDTxC4BplD9pd81ixzt6IDHe4-AQ/exec";
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTh625KloAOli6edcNijmLZ3ZuoHcV0oVkyvV6vdA05N2AKSQZf09NHctbSeqs6GpBOw/exec";
 
   const radioState = {
     'who-group': null, 'cat-group': null, 'format-group': null, 'reciprocity-group': null,
@@ -864,6 +871,8 @@
   };
   let transitionOn = false;
   let transitionOnReview = false;
+  let founderOn = false;
+  let founderOnReview = false;
 
   // ── Progress ────────────────────────────────────────────────────────────────
 
@@ -925,6 +934,16 @@
     document.getElementById('r-transition-toggle').classList.toggle('active', transitionOnReview);
   }
 
+  function toggleFounder() {
+    founderOn = !founderOn;
+    document.getElementById('founder-toggle').classList.toggle('active', founderOn);
+  }
+
+  function toggleFounderReview() {
+    founderOnReview = !founderOnReview;
+    document.getElementById('r-founder-toggle').classList.toggle('active', founderOnReview);
+  }
+
   function selectOption(groupId, el) {
     document.querySelectorAll('#' + groupId + ' .option').forEach(o => o.classList.remove('selected'));
     el.classList.add('selected');
@@ -965,6 +984,8 @@
     document.getElementById('r-career-stage').value = document.getElementById('career-stage').value;
     transitionOnReview = transitionOn;
     document.getElementById('r-transition-toggle').classList.toggle('active', transitionOnReview);
+    founderOnReview = founderOn;
+    document.getElementById('r-founder-toggle').classList.toggle('active', founderOnReview);
     document.getElementById('r-career-role').value = document.getElementById('career-role').value;
     document.getElementById('r-career-industry').value = document.getElementById('career-industry').value;
     document.getElementById('r-career-other').value = document.getElementById('career-other').value;
@@ -1040,10 +1061,14 @@
   function renderCareerSummary() {
     const stage = val('r-career-stage');
     const transition = document.getElementById('r-transition-toggle').classList.contains('active');
+    const founder = document.getElementById('r-founder-toggle').classList.contains('active');
     const role = val('r-career-role');
     const industry = val('r-career-industry');
     const other = val('r-career-other');
-    let html = rv('Career stage', stage + (transition ? ' · Currently in transition' : ''));
+    let extras = [];
+    if (transition) extras.push('Currently in transition');
+    if (founder) extras.push('Founder or self-employed');
+    let html = rv('Career stage', stage + (extras.length ? ' · ' + extras.join(' · ') : ''));
     html += rv('Role', role);
     html += rv('Industry', industry);
     if (other) html += rv('Other context', other);
@@ -1115,6 +1140,8 @@
       document.getElementById('career-stage').value = document.getElementById('r-career-stage').value;
       transitionOn = transitionOnReview;
       document.getElementById('transition-toggle').classList.toggle('active', transitionOn);
+      founderOn = founderOnReview;
+      document.getElementById('founder-toggle').classList.toggle('active', founderOn);
       document.getElementById('career-role').value = document.getElementById('r-career-role').value;
       document.getElementById('career-industry').value = document.getElementById('r-career-industry').value;
       document.getElementById('career-other').value = document.getElementById('r-career-other').value;
@@ -1182,6 +1209,7 @@
       name: document.getElementById('user-name').value.trim(),
       careerStage: document.getElementById('career-stage').value,
       inTransition: transitionOn ? 'yes' : 'no',
+      isFounder: founderOn ? 'yes' : 'no',
       role: document.getElementById('career-role').value.trim(),
       industry: document.getElementById('career-industry').value.trim(),
       otherContext: document.getElementById('career-other').value.trim(),
