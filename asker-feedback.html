@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,9 +48,15 @@
   .rating-pill.selected { border-color: var(--accent); background: var(--accent-lt); color: var(--accent); font-weight: 600; }
   .rating-anchors { display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: var(--ink-4); }
 
+  .choice-row { display: flex; gap: 8px; }
+  .choice-pill { flex: 1; padding: 11px 0; border: 0.5px solid var(--border-md); border-radius: var(--radius); background: var(--paper); text-align: center; font-size: 13px; color: var(--ink-2); cursor: pointer; user-select: none; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+  .choice-pill:hover { border-color: var(--accent); }
+  .choice-pill.selected { border-color: var(--accent); background: var(--accent-lt); color: var(--accent); font-weight: 600; }
+
   textarea { width: 100%; padding: 12px 14px; font-family: var(--font-sans); font-size: 14px; line-height: 1.6; color: var(--ink); background: var(--paper); border: 0.5px solid var(--border-md); border-radius: var(--radius); resize: vertical; min-height: 90px; transition: border-color 0.15s; }
   textarea:focus { outline: none; border-color: var(--accent); }
   textarea::placeholder { color: var(--ink-4); font-style: italic; font-size: 13px; }
+  textarea.tight { min-height: 56px; margin-top: 0.5rem; }
 
   .btn-send { display: block; width: 100%; font-size: 14px; font-weight: 500; color: #fff; background: var(--accent); border: none; border-radius: 8px; padding: 13px 20px; cursor: pointer; transition: opacity 0.15s; margin-top: 0.25rem; }
   .btn-send:hover { opacity: 0.88; }
@@ -124,9 +131,23 @@
         <div class="rating-anchors"><span>Less than expected</span><span>More than expected</span></div>
       </div>
 
-      <!-- Q4: anything else -->
+      <!-- Q4: want more from any responder -->
       <div class="q-card">
-        <div class="q-title">4. Anything else on your mind? Anything that would make this better?</div>
+        <div class="q-title">4. Was there anyone whose response made you want to hear more from them?</div>
+        <div class="choice-row" id="choice-more">
+          <div class="choice-pill" onclick="pickChoice('more', 'Yes, one of them', this)">Yes, one of them</div>
+          <div class="choice-pill" onclick="pickChoice('more', 'Yes, more than one', this)">Yes, more than one</div>
+        </div>
+        <div class="choice-row" style="margin-top: 8px;">
+          <div class="choice-pill" onclick="pickChoice('more', 'Not really', this)">Not really</div>
+          <div class="choice-pill" onclick="pickChoice('more', 'Not sure', this)">Not sure</div>
+        </div>
+        <textarea class="tight" id="more-text" placeholder="If yes — no promises — who, and what would you want to talk through?"></textarea>
+      </div>
+
+      <!-- Q5: anything else -->
+      <div class="q-card">
+        <div class="q-title">5. Anything else on your mind? Anything that would make this better?</div>
         <textarea id="anything-else" placeholder="Big or small, all of it helps."></textarea>
       </div>
 
@@ -159,6 +180,13 @@
   }
 
   const ratings = { overall: null, helpfulness: null, variety: null };
+  const choices = { more: null };
+
+  function pickChoice(key, value, el) {
+    choices[key] = value;
+    document.querySelectorAll('#choice-' + key + ' .choice-pill').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+  }
 
   function pickRating(key, value, el) {
     ratings[key] = value;
@@ -169,6 +197,7 @@
   async function sendExperienceFeedback() {
     const btn = document.getElementById('btn-send');
     const hesitation = document.getElementById('hesitation').value.trim();
+    const moreText = document.getElementById('more-text').value.trim();
     const anythingElse = document.getElementById('anything-else').value.trim();
 
     const parts = [];
@@ -176,6 +205,7 @@
     parts.push('Hesitation: ' + (hesitation || 'no answer'));
     parts.push('Answers - helpfulness: ' + (ratings.helpfulness !== null ? ratings.helpfulness + '/5' : 'not rated'));
     parts.push('Answers - variety vs expectation: ' + (ratings.variety !== null ? ratings.variety + '/5' : 'not rated'));
+    parts.push('Wants more from a responder: ' + (choices.more || 'not answered') + (moreText ? (' — ' + moreText) : ''));
     parts.push('Anything else: ' + (anythingElse || 'no answer'));
 
     btn.disabled = true;
