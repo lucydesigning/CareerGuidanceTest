@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="color-scheme" content="light only" />
+<meta name="supported-color-schemes" content="light" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How was it?</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { color-scheme: light; background: #f5f3ed; }
+  :root {
+    --ink:       #1c1c1a;
+    --ink-2:     #4a4a47;
+    --ink-3:     #7a7a76;
+    --ink-4:     #a8a8a3;
+    --paper:     #f5f3ed;
+    --paper-2:   #eceae2;
+    --white:     #ffffff;
+    --accent:    #2d5a4e;
+    --accent-lt: #e8f0ee;
+    --border:    rgba(28,28,26,0.12);
+    --border-md: rgba(28,28,26,0.20);
+    --font-serif: Georgia, "Times New Roman", serif;
+    --font-sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --radius:     10px;
+  }
+  body { font-family: var(--font-sans); background: #f5f3ed !important; color: #1c1c1a !important; min-height: 100vh; padding: 0 0 5rem; }
+
+  .site-header { background: var(--accent); padding: 0.85rem 1.5rem; display: flex; align-items: center; gap: 10px; }
+  .site-header-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.4); }
+  .site-header-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.65); }
+
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 1.25rem; }
+
+  .intro { padding: 2rem 0 1.5rem; }
+  .intro-heading { font-family: var(--font-serif); font-size: 25px; font-weight: 400; line-height: 1.4; color: var(--ink); margin-bottom: 0.9rem; }
+  .intro-sub { font-size: 14px; color: var(--ink-2); line-height: 1.75; }
+
+  .q-card { background: var(--white); border: 0.5px solid var(--border-md); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .q-title { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.5; margin-bottom: 0.9rem; }
+  .q-sub { font-size: 13px; color: var(--ink-2); line-height: 1.6; margin: 0.9rem 0 0.5rem; }
+
+  .rating-row { display: flex; gap: 8px; }
+  .rating-pill { flex: 1; padding: 11px 0; border: 0.5px solid var(--border-md); border-radius: var(--radius); background: var(--paper); text-align: center; font-size: 14px; color: var(--ink-2); cursor: pointer; user-select: none; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+  .rating-pill:hover { border-color: var(--accent); }
+  .rating-pill.selected { border-color: var(--accent); background: var(--accent-lt); color: var(--accent); font-weight: 600; }
+  .rating-anchors { display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: var(--ink-4); }
+
+  textarea { width: 100%; padding: 12px 14px; font-family: var(--font-sans); font-size: 14px; line-height: 1.6; color: var(--ink); background: var(--paper); border: 0.5px solid var(--border-md); border-radius: var(--radius); resize: vertical; min-height: 90px; transition: border-color 0.15s; }
+  textarea:focus { outline: none; border-color: var(--accent); }
+  textarea::placeholder { color: var(--ink-4); font-style: italic; font-size: 13px; }
+
+  .btn-send { display: block; width: 100%; font-size: 14px; font-weight: 500; color: #fff; background: var(--accent); border: none; border-radius: 8px; padding: 13px 20px; cursor: pointer; transition: opacity 0.15s; margin-top: 0.25rem; }
+  .btn-send:hover { opacity: 0.88; }
+  .btn-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .thanks-card { display: none; background: var(--white); border: 0.5px solid var(--border-md); border-radius: 12px; padding: 2rem 1.5rem; text-align: center; }
+  .thanks-card.visible { display: block; }
+  .thanks-heading { font-family: var(--font-serif); font-size: 21px; color: var(--ink); margin-bottom: 0.6rem; }
+  .thanks-sub { font-size: 14px; color: var(--ink-2); line-height: 1.7; }
+
+  .contact-note { text-align: center; font-size: 12px; color: var(--ink-4); margin-top: 2rem; }
+  .contact-note a { color: var(--ink-3); }
+</style>
+</head>
+<body>
+
+  <div class="site-header">
+    <div class="site-header-dot"></div>
+    <div class="site-header-label">A few questions, just between us</div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="intro">
+      <div class="intro-heading">How was it for you<span id="greet-name"></span>?</div>
+      <div class="intro-sub">
+        You were one of the very few to go through this first round of experiment. I appreciate your participation and openness to try something new and different. Your honest take, including anything that felt off or awkward, is the most useful thing you can give me right now. This takes about two minutes, and there are no wrong answers.
+      </div>
+    </div>
+
+    <div id="form-area">
+
+      <!-- Q1: overall experience -->
+      <div class="q-card">
+        <div class="q-title">1. Overall, how was this experience for you?</div>
+        <div class="rating-row" id="rating-overall">
+          <div class="rating-pill" onclick="pickRating('overall', 1, this)">1</div>
+          <div class="rating-pill" onclick="pickRating('overall', 2, this)">2</div>
+          <div class="rating-pill" onclick="pickRating('overall', 3, this)">3</div>
+          <div class="rating-pill" onclick="pickRating('overall', 4, this)">4</div>
+          <div class="rating-pill" onclick="pickRating('overall', 5, this)">5</div>
+        </div>
+        <div class="rating-anchors"><span>Not great</span><span>Loved it</span></div>
+      </div>
+
+      <!-- Q2: hesitation -->
+      <div class="q-card">
+        <div class="q-title">2. Did you hesitate at the beginning, or at any point along the way? If so, what was it around?</div>
+        <textarea id="hesitation" placeholder="e.g. sharing something personal with strangers, how my question would come across, whether it was worth the time..."></textarea>
+      </div>
+
+      <!-- Q3: the answers -->
+      <div class="q-card">
+        <div class="q-title">3. What did you think of the answers?</div>
+        <div class="q-sub">How helpful were they?</div>
+        <div class="rating-row" id="rating-helpfulness">
+          <div class="rating-pill" onclick="pickRating('helpfulness', 1, this)">1</div>
+          <div class="rating-pill" onclick="pickRating('helpfulness', 2, this)">2</div>
+          <div class="rating-pill" onclick="pickRating('helpfulness', 3, this)">3</div>
+          <div class="rating-pill" onclick="pickRating('helpfulness', 4, this)">4</div>
+          <div class="rating-pill" onclick="pickRating('helpfulness', 5, this)">5</div>
+        </div>
+        <div class="rating-anchors"><span>Not helpful</span><span>Very helpful</span></div>
+        <div class="q-sub">Did they give you the variety of perspectives you expected?</div>
+        <div class="rating-row" id="rating-variety">
+          <div class="rating-pill" onclick="pickRating('variety', 1, this)">1</div>
+          <div class="rating-pill" onclick="pickRating('variety', 2, this)">2</div>
+          <div class="rating-pill" onclick="pickRating('variety', 3, this)">3</div>
+          <div class="rating-pill" onclick="pickRating('variety', 4, this)">4</div>
+          <div class="rating-pill" onclick="pickRating('variety', 5, this)">5</div>
+        </div>
+        <div class="rating-anchors"><span>Less than expected</span><span>More than expected</span></div>
+      </div>
+
+      <!-- Q4: anything else -->
+      <div class="q-card">
+        <div class="q-title">4. Anything else on your mind? Anything that would make this better?</div>
+        <textarea id="anything-else" placeholder="Big or small, all of it helps."></textarea>
+      </div>
+
+      <button class="btn-send" id="btn-send" onclick="sendExperienceFeedback()">Send to Lucy</button>
+
+    </div>
+
+    <div class="thanks-card" id="thanks-card">
+      <div class="thanks-heading">Thank you<span id="thanks-name"></span>.</div>
+      <div class="thanks-sub">This genuinely helps shape what comes next. I'll be in touch.</div>
+    </div>
+
+    <div class="contact-note">Questions? <a href="mailto:lucydesigning@gmail.com?subject=Guroo feedback">Email Lucy</a></div>
+
+  </div>
+
+<script>
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAfw_b_6fnJPg3PYqiGmOwL8fYxBIM6sgUPPxibeG3MyDB-IokVwI-ke7zYfoCmq9tAg/exec";
+
+  // ── Read who this is and which question, from the URL ──────────────
+  // Share like:  asker-feedback.html?q=Q006&name=Appy
+  const params = new URLSearchParams(window.location.search);
+  const QUESTION_ID = (params.get('q') || '').trim() || 'unknown';
+  const ASKER_NAME  = (params.get('name') || '').trim();
+
+  // Personalize the greeting if a name was passed
+  if (ASKER_NAME) {
+    document.getElementById('greet-name').textContent = ', ' + ASKER_NAME;
+    document.getElementById('thanks-name').textContent = ', ' + ASKER_NAME;
+  }
+
+  const ratings = { overall: null, helpfulness: null, variety: null };
+
+  function pickRating(key, value, el) {
+    ratings[key] = value;
+    document.querySelectorAll('#rating-' + key + ' .rating-pill').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  async function sendExperienceFeedback() {
+    const btn = document.getElementById('btn-send');
+    const hesitation = document.getElementById('hesitation').value.trim();
+    const anythingElse = document.getElementById('anything-else').value.trim();
+
+    const parts = [];
+    parts.push('Overall experience: ' + (ratings.overall !== null ? ratings.overall + '/5' : 'not rated'));
+    parts.push('Hesitation: ' + (hesitation || 'no answer'));
+    parts.push('Answers - helpfulness: ' + (ratings.helpfulness !== null ? ratings.helpfulness + '/5' : 'not rated'));
+    parts.push('Answers - variety vs expectation: ' + (ratings.variety !== null ? ratings.variety + '/5' : 'not rated'));
+    parts.push('Anything else: ' + (anythingElse || 'no answer'));
+
+    btn.disabled = true;
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'askerFeedback',
+          questionId: QUESTION_ID,
+          responderName: ASKER_NAME ? ('Experience feedback - ' + ASKER_NAME) : 'Experience feedback',
+          feedbackType: 'experience',
+          format: 'write',
+          message: parts.join(' | '),
+          voiceMemoUrl: ''
+        })
+      });
+    } catch (e) {}
+    document.getElementById('form-area').style.display = 'none';
+    document.getElementById('thanks-card').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
