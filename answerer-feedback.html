@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="color-scheme" content="light only" />
+<meta name="supported-color-schemes" content="light" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>How was it?</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { color-scheme: light; background: #f5f3ed; }
+  :root {
+    --ink:       #1c1c1a;
+    --ink-2:     #4a4a47;
+    --ink-3:     #7a7a76;
+    --ink-4:     #a8a8a3;
+    --paper:     #f5f3ed;
+    --paper-2:   #eceae2;
+    --white:     #ffffff;
+    --accent:    #2d5a4e;
+    --accent-lt: #e8f0ee;
+    --border:    rgba(28,28,26,0.12);
+    --border-md: rgba(28,28,26,0.20);
+    --font-serif: Georgia, "Times New Roman", serif;
+    --font-sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --radius:     10px;
+  }
+  body { font-family: var(--font-sans); background: #f5f3ed !important; color: #1c1c1a !important; min-height: 100vh; padding: 0 0 5rem; }
+
+  .site-header { background: var(--accent); padding: 0.85rem 1.5rem; display: flex; align-items: center; gap: 10px; }
+  .site-header-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.4); }
+  .site-header-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.65); }
+
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 1.25rem; }
+
+  .intro { padding: 2rem 0 1.5rem; }
+  .intro-heading { font-family: var(--font-serif); font-size: 25px; font-weight: 400; line-height: 1.4; color: var(--ink); margin-bottom: 0.9rem; }
+  .intro-sub { font-size: 14px; color: var(--ink-2); line-height: 1.75; }
+
+  .q-card { background: var(--white); border: 0.5px solid var(--border-md); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem; }
+  .q-title { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.5; margin-bottom: 0.9rem; }
+  .q-sub { font-size: 13px; color: var(--ink-2); line-height: 1.6; margin: 0.9rem 0 0.5rem; }
+
+  .rating-row { display: flex; gap: 8px; }
+  .rating-pill { flex: 1; padding: 11px 0; border: 0.5px solid var(--border-md); border-radius: var(--radius); background: var(--paper); text-align: center; font-size: 14px; color: var(--ink-2); cursor: pointer; user-select: none; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+  .rating-pill:hover { border-color: var(--accent); }
+  .rating-pill.selected { border-color: var(--accent); background: var(--accent-lt); color: var(--accent); font-weight: 600; }
+  .rating-anchors { display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: var(--ink-4); }
+
+  .choice-row { display: flex; gap: 8px; }
+  .choice-pill { flex: 1; padding: 11px 0; border: 0.5px solid var(--border-md); border-radius: var(--radius); background: var(--paper); text-align: center; font-size: 13px; color: var(--ink-2); cursor: pointer; user-select: none; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+  .choice-pill:hover { border-color: var(--accent); }
+  .choice-pill.selected { border-color: var(--accent); background: var(--accent-lt); color: var(--accent); font-weight: 600; }
+
+  .na-toggle { display: inline-block; margin-top: 0.75rem; font-size: 12px; color: var(--ink-3); cursor: pointer; user-select: none; border-bottom: 0.5px dotted var(--ink-4); }
+  .na-toggle.selected { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+
+  textarea { width: 100%; padding: 12px 14px; font-family: var(--font-sans); font-size: 14px; line-height: 1.6; color: var(--ink); background: var(--paper); border: 0.5px solid var(--border-md); border-radius: var(--radius); resize: vertical; min-height: 80px; transition: border-color 0.15s; margin-top: 0.5rem; }
+  textarea:focus { outline: none; border-color: var(--accent); }
+  textarea::placeholder { color: var(--ink-4); font-style: italic; font-size: 13px; }
+  textarea.tight { min-height: 56px; }
+
+  .btn-send { display: block; width: 100%; font-size: 14px; font-weight: 500; color: #fff; background: var(--accent); border: none; border-radius: 8px; padding: 13px 20px; cursor: pointer; transition: opacity 0.15s; margin-top: 0.25rem; }
+  .btn-send:hover { opacity: 0.88; }
+  .btn-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .thanks-card { display: none; background: var(--white); border: 0.5px solid var(--border-md); border-radius: 12px; padding: 2rem 1.5rem; text-align: center; }
+  .thanks-card.visible { display: block; }
+  .thanks-heading { font-family: var(--font-serif); font-size: 21px; color: var(--ink); margin-bottom: 0.6rem; }
+  .thanks-sub { font-size: 14px; color: var(--ink-2); line-height: 1.7; }
+
+  .contact-note { text-align: center; font-size: 12px; color: var(--ink-4); margin-top: 2rem; }
+  .contact-note a { color: var(--ink-3); }
+</style>
+</head>
+<body>
+
+  <div class="site-header">
+    <div class="site-header-dot"></div>
+    <div class="site-header-label">A few questions, just between us</div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="intro">
+      <div class="intro-heading">Thank you for taking part<span id="greet-name"></span>.</div>
+      <div class="intro-sub">
+        You were one of the very few to help with this first round of the experiment, and I'm grateful you were willing to share something of yourself with someone you'd never met. I'd love to hear how it felt from your side. Your honest take, including anything that felt off or awkward, is the most useful thing you can give me right now. This takes about two minutes, and there are no wrong answers.
+      </div>
+    </div>
+
+    <div id="form-area">
+
+      <!-- Q1: overall -->
+      <div class="q-card">
+        <div class="q-title">1. Overall, how did it feel to take part?</div>
+        <div class="rating-row" id="rating-overall">
+          <div class="rating-pill" onclick="pickRating('overall', 1, this)">1</div>
+          <div class="rating-pill" onclick="pickRating('overall', 2, this)">2</div>
+          <div class="rating-pill" onclick="pickRating('overall', 3, this)">3</div>
+          <div class="rating-pill" onclick="pickRating('overall', 4, this)">4</div>
+          <div class="rating-pill" onclick="pickRating('overall', 5, this)">5</div>
+        </div>
+        <div class="rating-anchors"><span>Not great</span><span>Really glad I did</span></div>
+      </div>
+
+      <!-- Q2: ease of saying yes / finding time -->
+      <div class="q-card">
+        <div class="q-title">2. How easy was it to say yes and find the time?</div>
+        <div class="rating-row" id="rating-ease">
+          <div class="rating-pill" onclick="pickRating('ease', 1, this)">1</div>
+          <div class="rating-pill" onclick="pickRating('ease', 2, this)">2</div>
+          <div class="rating-pill" onclick="pickRating('ease', 3, this)">3</div>
+          <div class="rating-pill" onclick="pickRating('ease', 4, this)">4</div>
+          <div class="rating-pill" onclick="pickRating('ease', 5, this)">5</div>
+        </div>
+        <div class="rating-anchors"><span>Hard to fit in</span><span>Easy, glad to</span></div>
+      </div>
+
+      <!-- Q3: confidence in usefulness -->
+      <div class="q-card">
+        <div class="q-title">3. When you were answering the question, how confident did you feel that what you had to share was useful?</div>
+        <div class="rating-row" id="rating-confidence">
+          <div class="rating-pill" onclick="pickRating('confidence', 1, this)">1</div>
+          <div class="rating-pill" onclick="pickRating('confidence', 2, this)">2</div>
+          <div class="rating-pill" onclick="pickRating('confidence', 3, this)">3</div>
+          <div class="rating-pill" onclick="pickRating('confidence', 4, this)">4</div>
+          <div class="rating-pill" onclick="pickRating('confidence', 5, this)">5</div>
+        </div>
+        <div class="rating-anchors"><span>Not sure it helped</span><span>Sure it was useful</span></div>
+      </div>
+
+      <!-- Q4: hesitation -->
+      <div class="q-card">
+        <div class="q-title">4. Did anything make you hesitate, or feel unsure, before or during?</div>
+        <textarea id="hesitation" placeholder="e.g. whether my experience was relevant, whether my perspective was good enough, how it would come across..."></textarea>
+      </div>
+
+      <!-- Q5: would respond again -->
+      <div class="q-card">
+        <div class="q-title">5. Would you respond to another question if I sent one?</div>
+        <div class="choice-row" id="choice-again">
+          <div class="choice-pill" onclick="pickChoice('again', 'Yes', this)">Yes</div>
+          <div class="choice-pill" onclick="pickChoice('again', 'Maybe', this)">Maybe</div>
+          <div class="choice-pill" onclick="pickChoice('again', 'No', this)">No</div>
+        </div>
+        <textarea class="tight" id="again-text" placeholder="Optional: anything that would make you more (or less) likely?"></textarea>
+      </div>
+
+      <!-- Q6: how the thank-you / follow-up felt -->
+      <div class="q-card">
+        <div class="q-title">6. If the person you helped sent you a thank-you or a follow-up question, how did that feel?</div>
+        <div class="rating-row" id="rating-response">
+          <div class="rating-pill" onclick="pickRating('response', 1, this)">1</div>
+          <div class="rating-pill" onclick="pickRating('response', 2, this)">2</div>
+          <div class="rating-pill" onclick="pickRating('response', 3, this)">3</div>
+          <div class="rating-pill" onclick="pickRating('response', 4, this)">4</div>
+          <div class="rating-pill" onclick="pickRating('response', 5, this)">5</div>
+        </div>
+        <div class="rating-anchors"><span>Didn't add much</span><span>Really meaningful</span></div>
+        <span class="na-toggle" id="response-na" onclick="toggleNA(this)">I haven't received one yet</span>
+        <textarea class="tight" id="response-text" placeholder="Optional: anything you'd want to say back to them?"></textarea>
+      </div>
+
+      <!-- Q7: made you want to ask your own -->
+      <div class="q-card">
+        <div class="q-title">7. Did taking part make you want to ask a question of your own?</div>
+        <div class="choice-row" id="choice-ask">
+          <div class="choice-pill" onclick="pickChoice('ask', 'Yes', this)">Yes</div>
+          <div class="choice-pill" onclick="pickChoice('ask', 'Maybe', this)">Maybe</div>
+          <div class="choice-pill" onclick="pickChoice('ask', 'No', this)">No</div>
+        </div>
+        <textarea class="tight" id="ask-text" placeholder="Optional: what might you ask, or what's holding you back?"></textarea>
+      </div>
+
+      <!-- Q8: anything else -->
+      <div class="q-card">
+        <div class="q-title">8. Anything else on your mind? Anything that would make this better?</div>
+        <textarea id="anything-else" placeholder="Big or small, all of it helps."></textarea>
+      </div>
+
+      <button class="btn-send" id="btn-send" onclick="sendAnswererFeedback()">Send to Lucy</button>
+
+    </div>
+
+    <div class="thanks-card" id="thanks-card">
+      <div class="thanks-heading">Thank you<span id="thanks-name"></span>.</div>
+      <div class="thanks-sub">This genuinely helps shape what comes next. I'll be in touch.</div>
+    </div>
+
+    <div class="contact-note">Questions? <a href="mailto:lucydesigning@gmail.com?subject=Guroo feedback">Email Lucy</a></div>
+
+  </div>
+
+<script>
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAfw_b_6fnJPg3PYqiGmOwL8fYxBIM6sgUPPxibeG3MyDB-IokVwI-ke7zYfoCmq9tAg/exec";
+
+  // ── Read who this is and which question, from the URL ──────────────
+  // Share like:  answerer-feedback.html?q=Q006&name=Rachel
+  const params = new URLSearchParams(window.location.search);
+  const QUESTION_ID    = (params.get('q') || '').trim() || 'unknown';
+  const ANSWERER_NAME  = (params.get('name') || '').trim();
+
+  if (ANSWERER_NAME) {
+    document.getElementById('greet-name').textContent = ', ' + ANSWERER_NAME;
+    document.getElementById('thanks-name').textContent = ', ' + ANSWERER_NAME;
+  }
+
+  const ratings = { overall: null, ease: null, confidence: null, response: null };
+  const choices = { again: null, ask: null };
+  let responseNA = false;
+
+  function pickRating(key, value, el) {
+    // Selecting a rating clears any "not applicable" toggle for that group
+    if (key === 'response') {
+      responseNA = false;
+      document.getElementById('response-na').classList.remove('selected');
+    }
+    ratings[key] = value;
+    document.querySelectorAll('#rating-' + key + ' .rating-pill').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function pickChoice(key, value, el) {
+    choices[key] = value;
+    document.querySelectorAll('#choice-' + key + ' .choice-pill').forEach(p => p.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  function toggleNA(el) {
+    responseNA = !responseNA;
+    el.classList.toggle('selected', responseNA);
+    if (responseNA) {
+      ratings.response = null;
+      document.querySelectorAll('#rating-response .rating-pill').forEach(p => p.classList.remove('selected'));
+    }
+  }
+
+  async function sendAnswererFeedback() {
+    const btn = document.getElementById('btn-send');
+    const hesitation   = document.getElementById('hesitation').value.trim();
+    const againText    = document.getElementById('again-text').value.trim();
+    const responseText = document.getElementById('response-text').value.trim();
+    const askText      = document.getElementById('ask-text').value.trim();
+    const anythingElse = document.getElementById('anything-else').value.trim();
+
+    const parts = [];
+    parts.push('Overall: ' + (ratings.overall !== null ? ratings.overall + '/5' : 'not rated'));
+    parts.push('Ease of taking part: ' + (ratings.ease !== null ? ratings.ease + '/5' : 'not rated'));
+    parts.push('Confidence it was useful: ' + (ratings.confidence !== null ? ratings.confidence + '/5' : 'not rated'));
+    parts.push('Hesitation: ' + (hesitation || 'no answer'));
+    parts.push('Would respond again: ' + (choices.again || 'not answered') + (againText ? (' — ' + againText) : ''));
+    let respPart = 'Thank-you / follow-up felt: ';
+    if (responseNA) respPart += "hasn't received one yet";
+    else respPart += (ratings.response !== null ? ratings.response + '/5' : 'not rated');
+    if (responseText) respPart += ' — ' + responseText;
+    parts.push(respPart);
+    parts.push('Wants to ask own question: ' + (choices.ask || 'not answered') + (askText ? (' — ' + askText) : ''));
+    parts.push('Anything else: ' + (anythingElse || 'no answer'));
+
+    btn.disabled = true;
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'askerFeedback',
+          questionId: QUESTION_ID,
+          responderName: ANSWERER_NAME ? ('Answerer feedback - ' + ANSWERER_NAME) : 'Answerer feedback',
+          feedbackType: 'answerer-experience',
+          format: 'write',
+          message: parts.join(' | '),
+          voiceMemoUrl: ''
+        })
+      });
+    } catch (e) {}
+    document.getElementById('form-area').style.display = 'none';
+    document.getElementById('thanks-card').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
