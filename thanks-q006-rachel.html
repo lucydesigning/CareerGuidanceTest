@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="color-scheme" content="light only" />
+<meta name="supported-color-schemes" content="light" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A note back for Rachel</title>
+<meta property="og:type" content="website" />
+<meta property="og:title" content="A note back, just for you" />
+<meta property="og:description" content="The woman you wrote to read your response and sent something back." />
+<meta property="og:image" content="https://lucydesigning.github.io/CareerGuidanceTest/appy.webp" />
+<meta property="og:url" content="https://lucydesigning.github.io/CareerGuidanceTest/thanks-q006-rachel.html" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="A note back, just for you" />
+<meta name="twitter:description" content="The woman you wrote to read your response and sent something back." />
+<meta name="twitter:image" content="https://lucydesigning.github.io/CareerGuidanceTest/appy.webp" />
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { color-scheme: light; background: #f5f3ed; }
+  :root {
+    --ink:       #1c1c1a;
+    --ink-2:     #4a4a47;
+    --ink-3:     #7a7a76;
+    --ink-4:     #a8a8a3;
+    --paper:     #f5f3ed;
+    --paper-2:   #eceae2;
+    --white:     #ffffff;
+    --accent:    #2d5a4e;
+    --accent-lt: #e8f0ee;
+    --red:       #b94040;
+    --border:    rgba(28,28,26,0.12);
+    --border-md: rgba(28,28,26,0.20);
+    --font-serif: Georgia, "Times New Roman", serif;
+    --font-sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --radius:     10px;
+  }
+  body { font-family: var(--font-sans); background: #f5f3ed !important; color: #1c1c1a !important; min-height: 100vh; padding: 0 0 5rem; }
+
+  .site-header { background: var(--accent); padding: 0.85rem 1.5rem; display: flex; align-items: center; gap: 10px; }
+  .site-header-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.4); }
+  .site-header-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.65); }
+
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 1.25rem; }
+
+  /* ── Avatars ── */
+  .avatar { border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-family: var(--font-serif); flex-shrink: 0; overflow: hidden; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .avatar-appy { width: 72px; height: 72px; background: var(--accent); font-size: 28px; }
+  .avatar-sm { width: 44px; height: 44px; background: var(--ink-3); font-size: 17px; }
+
+  .intro { padding: 2rem 0 0.5rem; text-align: center; }
+  .intro .avatar-appy { margin: 0 auto 1rem; }
+  .intro-eyebrow { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 0.6rem; }
+  .intro-heading { font-family: var(--font-serif); font-size: 25px; font-weight: 400; line-height: 1.4; color: var(--ink); margin-bottom: 0.9rem; text-align: left; }
+  .intro-sub { font-size: 14px; color: var(--ink-2); line-height: 1.75; margin-bottom: 1.5rem; text-align: left; }
+
+  .q-toggle { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.25rem; border: 0.5px solid var(--border-md); border-radius: var(--radius); background: var(--white); cursor: pointer; font-size: 13px; color: var(--ink-3); user-select: none; transition: background 0.15s; margin-bottom: 2rem; }
+  .q-toggle:hover { background: var(--paper); }
+  .q-toggle.open { border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; }
+  .q-toggle-arrow { transition: transform 0.2s; }
+  .q-toggle.open .q-toggle-arrow { transform: rotate(180deg); }
+  .q-body { display: none; border: 0.5px solid var(--border-md); border-top: none; border-radius: 0 0 var(--radius) var(--radius); background: var(--white); padding: 1.25rem; margin-bottom: 2rem; }
+  .q-body.open { display: block; }
+  .q-block { margin-bottom: 1rem; }
+  .q-block:last-child { margin-bottom: 0; }
+  .q-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-4); margin-bottom: 4px; }
+  .q-text { font-size: 14px; color: var(--ink-2); line-height: 1.65; }
+
+  .response-card { background: var(--white); border: 0.5px solid var(--border-md); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .response-head { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
+  .response-head-text { flex: 1; }
+  .response-name { font-family: var(--font-serif); font-size: 19px; color: var(--ink); line-height: 1.3; }
+  .response-tag { font-size: 12px; color: var(--ink-3); margin-top: 1px; }
+  .response-tagline { font-family: var(--font-serif); font-style: italic; font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 1.1rem; }
+  .topic-tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: var(--paper); color: var(--ink-3); border: 0.5px solid var(--border-md); }
+  .modal-topics-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-4); margin: 1.1rem 0 0.5rem; }
+  .modal-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  audio { width: 100%; border-radius: 8px; margin-bottom: 0.25rem; display: block; }
+
+  .second-note { border-top: 0.5px solid var(--border); margin-top: 1.1rem; padding-top: 1.1rem; }
+  .second-note-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-4); margin-bottom: 0.6rem; }
+
+  .transcript-toggle { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--ink-3); background: none; border: none; cursor: pointer; padding: 6px 0 0; margin-bottom: 0.5rem; }
+  .transcript-toggle:hover { color: var(--accent); }
+  .transcript-toggle-arrow { transition: transform 0.2s; font-size: 10px; }
+  .transcript-toggle.open .transcript-toggle-arrow { transform: rotate(180deg); }
+  .transcript-body { display: none; background: var(--paper); border-radius: var(--radius); padding: 1rem 1.1rem; margin-bottom: 1rem; }
+  .transcript-body.open { display: block; }
+  .transcript-text { font-size: 13px; color: var(--ink-2); line-height: 1.75; }
+  .transcript-text p { margin-bottom: 0.85rem; }
+  .transcript-text p:last-child { margin-bottom: 0; }
+  .transcript-note { font-size: 11px; color: var(--ink-4); font-style: italic; margin-top: 0.85rem; }
+
+  .response-actions { display: flex; gap: 8px; margin-top: 1.1rem; }
+  .action-btn { flex: 1; padding: 10px 14px; border: 0.5px solid var(--border-md); border-radius: var(--radius); background: var(--white); font-size: 13px; color: var(--ink-2); cursor: pointer; text-align: center; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+  .action-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .action-btn.active { border-color: var(--accent); background: var(--accent-lt); color: var(--accent); }
+
+  .action-panel { display: none; margin-top: 1rem; }
+  .action-panel.visible { display: block; }
+
+  .format-tabs { display: flex; gap: 8px; margin-bottom: 0.75rem; }
+  .format-tab { flex: 1; padding: 8px 10px; border: 0.5px solid var(--border-md); border-radius: var(--radius); cursor: pointer; background: var(--paper); text-align: center; font-size: 12px; color: var(--ink-3); transition: border-color 0.15s, background 0.15s, color 0.15s; }
+  .format-tab:hover { border-color: var(--ink-3); }
+  .format-tab.active { border-color: var(--accent); background: var(--accent-lt); color: var(--accent); }
+  .format-panel { display: none; }
+  .format-panel.visible { display: block; }
+
+  textarea { width: 100%; padding: 12px 14px; font-family: var(--font-sans); font-size: 14px; line-height: 1.6; color: var(--ink); background: var(--paper); border: 0.5px solid var(--border-md); border-radius: var(--radius); resize: vertical; min-height: 80px; transition: border-color 0.15s; }
+  textarea:focus { outline: none; border-color: var(--accent); }
+  textarea::placeholder { color: var(--ink-4); font-style: italic; font-size: 13px; }
+
+  .voice-area { background: var(--paper); border: 0.5px solid var(--border-md); border-radius: var(--radius); padding: 1rem; }
+  .voice-or { text-align: center; font-size: 11px; color: var(--ink-4); margin: 0.7rem 0; }
+  .recorder-controls { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+  .record-btn { width: 46px; height: 46px; border-radius: 50%; border: none; cursor: pointer; background: var(--accent); color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: opacity 0.15s, transform 0.1s; }
+  .record-btn:hover { opacity: 0.88; }
+  .record-btn.recording { background: var(--red); }
+  .record-btn:active { transform: scale(0.95); }
+  .record-timer { font-size: 15px; font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .record-status { font-size: 12px; color: var(--ink-2); text-align: center; }
+  .playback-area { margin-top: 0.75rem; display: none; }
+  .playback-area.visible { display: block; }
+  .upload-area { border: 1.5px dashed var(--border-md); border-radius: var(--radius); padding: 1rem; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; background: var(--white); font-size: 12px; color: var(--ink-3); }
+  .upload-area:hover { border-color: var(--accent); background: var(--accent-lt); }
+  .upload-area.has-file { border-style: solid; border-color: var(--accent); }
+  input[type="file"] { display: none; }
+
+  .btn-send { margin-top: 0.6rem; font-size: 13px; font-weight: 500; color: #fff; background: var(--accent); border: none; border-radius: 8px; padding: 9px 20px; cursor: pointer; transition: opacity 0.15s; }
+  .btn-send:hover { opacity: 0.88; }
+  .btn-send:disabled { opacity: 0.5; cursor: not-allowed; }
+  .sent-note { font-size: 12px; color: var(--accent); margin-top: 0.5rem; display: none; }
+  .sent-note.visible { display: block; }
+
+  .placeholder-card { background: var(--paper-2); border: 0.5px dashed var(--border-md); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: center; font-size: 13px; color: var(--ink-3); line-height: 1.7; }
+  .feedback-link { display: inline-block; margin-top: 0.9rem; padding: 10px 22px; background: var(--accent); color: #fff; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: opacity 0.15s; }
+  .feedback-link:hover { opacity: 0.88; }
+
+  .contact-note { text-align: center; font-size: 12px; color: var(--ink-4); margin-top: 2rem; }
+  .contact-note a { color: var(--ink-3); }
+
+  .avatar { cursor: pointer; transition: opacity 0.15s; }
+  .avatar:hover { opacity: 0.85; }
+
+  .modal-overlay { position: fixed; inset: 0; background: rgba(28,28,26,0.55); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1.25rem; }
+  .modal-overlay.visible { display: flex; }
+  .modal-box { background: var(--white); border-radius: 14px; max-width: 400px; width: 100%; padding: 1.75rem; position: relative; max-height: 82vh; overflow-y: auto; }
+  .modal-close { position: absolute; top: 10px; right: 12px; background: none; border: none; font-size: 22px; color: var(--ink-3); cursor: pointer; line-height: 1; padding: 6px; }
+  .modal-close:hover { color: var(--ink); }
+  .modal-avatar { width: 88px; height: 88px; border-radius: 50%; overflow: hidden; margin: 0 auto 1rem; }
+  .modal-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .modal-name { font-family: var(--font-serif); font-size: 22px; color: var(--ink); text-align: center; margin-bottom: 4px; }
+  .modal-tag { font-size: 12px; color: var(--ink-3); text-align: center; margin-bottom: 1.1rem; line-height: 1.5; }
+  .modal-bio { font-size: 14px; color: var(--ink-2); line-height: 1.75; }
+
+
+  .note-card { background: var(--white); border: 0.5px solid var(--border-md); border-radius: 12px; padding: 1.6rem 1.5rem; margin-bottom: 1.25rem; }
+  .note-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-4); margin-bottom: 0.7rem; }
+  .note-text { font-family: var(--font-serif); font-size: 17px; line-height: 1.7; color: var(--ink); }
+  .note-text p { margin: 0 0 0.9rem; }
+  .note-text p:last-child { margin-bottom: 0; }
+  .reply-wrap { margin-bottom: 1.75rem; }
+  .box-toggle { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.25rem; border: 0.5px solid var(--border-md); border-radius: var(--radius); background: var(--white); cursor: pointer; font-size: 13px; color: var(--ink-3); user-select: none; transition: background 0.15s; margin-bottom: 0.75rem; }
+  .box-toggle:hover { background: var(--paper); }
+  .box-toggle.open { border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; }
+  .box-toggle-arrow { transition: transform 0.2s; }
+  .box-toggle.open .box-toggle-arrow { transform: rotate(180deg); }
+  .box-body { display: none; border: 0.5px solid var(--border-md); border-top: none; border-radius: 0 0 var(--radius) var(--radius); background: var(--white); padding: 1.25rem; margin-bottom: 0.75rem; }
+  .box-body.open { display: block; }
+  .box-body .transcript-body { display: block; }
+  .cta-spacer { height: 1.25rem; }
+  .signoff { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 0.5px solid var(--border); font-size: 14px; color: var(--ink-2); line-height: 1.75; }
+  .signoff-name { font-family: var(--font-serif); font-size: 16px; color: var(--ink); margin-top: 0.5rem; }
+  .contact-note { text-align: center; font-size: 12px; color: var(--ink-4); margin-top: 2rem; }
+  .contact-note a { color: var(--ink-3); }
+  .placeholder-card { margin-top: 1.5rem; }
+  .feedback-link { display: block; width: max-content; margin: 2rem auto 0; padding: 10px 22px; background: var(--accent); color: #fff; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: opacity 0.15s; }
+
+</style>
+</head>
+<body>
+
+  <div class="site-header">
+    <div class="site-header-dot"></div>
+    <div class="site-header-label">A note back, just for you</div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="intro">
+      <div class="avatar avatar-appy" id="avatar-appy" onclick="openProfile('appy')"><img src="appy.webp" alt="Appy"></div>
+      <div class="intro-eyebrow">From the woman you wrote to</div>
+    </div>
+
+    <div class="intro-heading">Appy read your response, Rachel.</div>
+    <div class="intro-sub">
+      She sent this back after listening. Passing it on exactly as she wrote it.
+    </div>
+
+    <div class="note-card">
+      <div class="note-label">From Appy</div>
+      <div class="note-text">
+        <p>Hi Rachel,</p>
+        <p>Thank you so much for taking the time to provide your mentorship. I really appreciate you listening to my story through my questions and empathizing with my 'international' background based on your own experiences.</p>
+        <p>Your advice about not looking at my situation as two separate worlds (industry vs. academia), but rather two sides of the same coin, really helped unlock inspiration in me. You also had fantastic advice on letting people in the industry peek into my research—i.e., 'bringing' them along on my journey and drawing parallels to what they may be working on.</p>
+        <p>I also worked at McKinsey (European office), by the way! :) I do not have any questions at the moment since my PhD has just begun and I am deeply focused on it. However, I would love to connect with you again in the near future. I am not sure how that works through this platform, but I will ask Lucy.</p>
+        <p>Kind regards,</p>
+        <p>Appy</p>
+      </div>
+    </div>
+
+    <div class="reply-wrap">
+      <div class="response-actions">
+        <div class="action-btn" id="reply-btn-1" onclick="toggleAction('thanks-1', this)">Respond to Appy's follow up</div>
+      </div>
+
+      <div class="action-panel" id="panel-thanks-1">
+        <div class="format-tabs">
+          <div class="format-tab active" id="tab-write-thanks-1" onclick="switchFormat('thanks-1', 'write')">Write it</div>
+          <div class="format-tab" id="tab-voice-thanks-1" onclick="switchFormat('thanks-1', 'voice')">Record it</div>
+        </div>
+        <div class="format-panel visible" id="write-panel-thanks-1">
+          <textarea id="thanks-text-1" placeholder="e.g. So glad it was useful. On staying in touch..."></textarea>
+        </div>
+        <div class="format-panel" id="voice-panel-thanks-1">
+          <div class="voice-area">
+            <div class="recorder-controls" id="recorder-ui-thanks-1">
+              <div class="record-timer" id="timer-thanks-1">0:00</div>
+              <button class="record-btn" id="record-btn-thanks-1" onclick="toggleRecording('thanks-1')">&#9679;</button>
+              <div class="record-status" id="record-status-thanks-1">Press to start recording</div>
+            </div>
+            <div class="playback-area" id="playback-area-thanks-1">
+              <audio id="audio-playback-thanks-1" controls></audio>
+            </div>
+            <div class="voice-or">or</div>
+            <div class="upload-area" id="upload-area-thanks-1" onclick="document.getElementById('file-input-thanks-1').click()">
+              Upload a voice memo you already have
+              <div id="upload-filename-thanks-1"></div>
+            </div>
+            <input type="file" id="file-input-thanks-1" accept="audio/*" onchange="handleFileUpload('thanks-1', this)" />
+          </div>
+        </div>
+        <button class="btn-send" onclick="sendFeedback('Appy', 'Q006', 'reply-from-Rachel', 'thanks-1', 'sent-1')">Send</button>
+        <div class="sent-note" id="sent-1">Sent. I will pass this to Appy.</div>
+      </div>
+    </div>
+
+    <div class="box-toggle" id="toggle-q" onclick="toggleBox('q')">
+      <span>See what she asked</span>
+      <span class="box-toggle-arrow">&#8964;</span>
+    </div>
+    <div class="box-body" id="body-q">
+
+      <div class="q-block">
+        <div class="q-label">Her situation</div>
+        <div class="q-text">I have just started working on a prestigious PhD after spending 4 years in consulting.</div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">The challenge</div>
+        <div class="q-text">How can I strategically leverage my consulting network to unlock leadership opportunities in the industry after spending the next 4 years working on a PhD in academia?</div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">What she was looking for</div>
+        <div class="q-text">How can one leverage a profile with a strong academic and technical background alongside elite consulting experience for future growth in the industry as a woman of color from an international background.</div>
+      </div>
+    
+    </div>
+
+    <div class="box-toggle" id="toggle-own" onclick="toggleBox('own')">
+      <span>Hear what you sent</span>
+      <span class="box-toggle-arrow">&#8964;</span>
+    </div>
+    <div class="box-body" id="body-own">
+      <div class="note-label">First note</div>
+      <audio controls preload="metadata">
+        <source src="audio-q006-rachel.webm" type="audio/webm">
+        Your browser does not support the audio element.
+      </audio>
+
+        <div class="transcript-text">
+          <p>Hi. First of all, I'll introduce myself.</p>
+          <p>So, I have a somewhat similar path with some caveats. I also spent the majority of my career in consulting, management consulting. I worked at a few startups before, but the bulk of my career was in consulting, and I left consulting. I joined a tech company for a year and a half, and then I went back to school to do a master's, so I did not do a PhD. However, I think the key similarity is in my master's, I spent a lot of time doing research, and I joined an AI lab, so I had a fairly academic experience in my master's.</p>
+          <p>So I think my biggest advice, in terms of connecting the threads between consulting and a PhD, is being open and sharing your research. I've been surprised, I've shared a few publications with partners and APs and engagement managers that I worked with, and I've received overwhelmingly positive responses from them asking for me to share more, asking questions. So I think sharing, even if it's not research, but just anything you're working on, I think people will be very excited to hear from you and learn about your PhD, because as you mentioned, it is a unique path.</p>
+          <p>I think another thing is lean into that, because it is unique. I think people will find it really interesting to learn about your PhD, what you're focusing on, and not think of it as something that is against the grain, but think of it as something that is unique in a positive way, because you'll add even more value.</p>
+          <p>I think the last thing, thinking about my experience, is how valuable pairing industry and academic experience is, because most of the academics I work with often lament that they wish they had industry experience, that they'd taken a few years to work at companies and see how things work in practice beyond the research. So the fact that you are marrying both sides of the coin, again, I think just adds to the value you'll bring to the table, whether you decide to stay in academia, or after your PhD decide to go back into a corporate setting.</p>
+          <p>So overall, I think if you take anything from this, I think you should be feeling really confident with your decision to do the PhD. I think you should follow your gut in terms of what you want to research, what particular topics you want to pursue, because that's very much what I did in my master's, I came in with a hypothesis of what I wanted to research, and I went with that, and I'm really glad that I did. It was very rewarding.</p>
+          <p>And of course, if there's anything else more specific you have questions about, I think hopefully you can let me know somehow, and I'm happy to connect more. But hopefully this was somewhat helpful, and I'm wishing you well with the PhD.</p>
+        </div>
+        <div class="transcript-note">This transcript was generated with AI and may not be word-for-word accurate.</div>
+      
+      <div class="note-label" style="margin-top:1.5rem;">Second note</div>
+      <audio controls preload="metadata">
+        <source src="audio-q006-rachel-2.webm" type="audio/webm">
+        Your browser does not support the audio element.
+      </audio>
+
+          <div class="transcript-text">
+            <p>Hey, Appy. This is Rachel again. I also realized I could share some learnings from my international experience. As I mentioned, I had the bulk of my career in consulting, and I actually moved. I'm Canadian, but it ended up being two and a half years working for McKinsey Mexico and McKinsey Dominican Republic. So I was living in Mexico, based out of Mexico, and doing the majority of my project work in Latin America.</p>
+            <p>You mentioned your background, you're an international student. I'm also now living in the United States, although culturally Canada and the United States aren't that different. But I can say, living outside of North America for those years, I think there's an added strain of being in a culture, speaking a language that might not be your native tongue, and just feeling like you need to kind of fend for yourself. At least when I was living in Latin America, I did not have any family or friends locally to rely on. So my point, and it's one that's made frequently, is just to reiterate the importance of self-care, giving yourself a little added empathy for anything you're dealing with when you're not surrounded by a community that you might have back home.</p>
+            <p>I'm not exactly sure what country you're in, but when I was living in Latin America, so much is different, but also the security for women is much lower. Navigating that was a difficulty at times. I'm not sure if that's something you deal with, but if it is, I can definitely relate to living in countries where safety and gender equality and misogyny, those dynamics can be very different.</p>
+            <p>I don't want to make this voice note too long. The only other thing I would say that helped me when I was living in Mexico and the Dominican Republic was finding other foreigners. They don't have to be from your same country, but I think there is a unique experience of being an expat, and I personally found it easier to sometimes bond with other people who were creating this new life and could relate to some of those struggles. At most universities there's a robust community of international students, and as I might have mentioned, I'm also studying a graduate program. I've found some of my closest friends in the international student community. So leaning into those networks, if possible. I was also able to meet a lot of international people through consulting, because by nature there's a lot of mobility opportunities in consulting.</p>
+            <p>And if you have any more specific questions about living internationally, I can talk a lot about the complications of even logistics, like bank accounts and managing multiple addresses. I don't know if those are things that have ever been challenging for you, but feel free to let me know any other specifics.</p>
+            <p>In summary, I can relate a lot to your story: navigating leaving consulting but still wanting to foster those relationships, pursuing a new path in academia, and at the same time building this very international career and trying to piece it all together. I definitely can relate to some of those challenges, and hopefully there's a way I can help you more. Hopefully this has been somewhat helpful.</p>
+          </div>
+          <div class="transcript-note">This transcript was generated with AI and may not be word-for-word accurate.</div>
+        
+    </div>
+
+
+    <div class="signoff">
+      Thank you for making the time.
+      <div class="signoff-name">Lucy</div>
+    </div>
+
+    <div class="placeholder-card">
+      While you are here, I would love to know how this felt from your side. Whether it was easy or awkward, whether you would do it again, whether the way I asked could be better. Two minutes, and it genuinely shapes what this becomes.
+      <a class="feedback-link" href="answerer-feedback.html?q=Q006&amp;name=Rachel">Share your thoughts</a>
+    </div>
+
+    <div class="contact-note">Questions? <a href="mailto:lucydesigning@gmail.com?subject=Q006">Email Lucy</a></div>
+
+  </div>
+
+  <!-- PROFILE MODAL -->
+  <div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this) closeProfile()">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeProfile()">&times;</button>
+      <div class="modal-avatar" id="modal-avatar"><img id="modal-avatar-img" src="" alt=""></div>
+      <div class="modal-name" id="modal-name"></div>
+      <div class="modal-tag" id="modal-tag"></div>
+      <div class="modal-bio" id="modal-bio"></div>
+      <div class="modal-topics-label" id="modal-topics-label" style="display:none;">She's open to talking about</div>
+      <div class="modal-topics" id="modal-topics"></div>
+    </div>
+  </div>
+
+<script>
+
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAfw_b_6fnJPg3PYqiGmOwL8fYxBIM6sgUPPxibeG3MyDB-IokVwI-ke7zYfoCmq9tAg/exec";
+
+  // ── per-panel recording state ──────────────────────────────────────
+  const panelState = {}; // key -> { format, mediaRecorder, chunks, blob, uploadedFile, voiceStatus, seconds, timerInterval }
+
+  function getState(key) {
+    if (!panelState[key]) {
+      panelState[key] = { format: 'write', mediaRecorder: null, chunks: [], blob: null, uploadedFile: null, voiceStatus: 'none', seconds: 0, timerInterval: null };
+    }
+    return panelState[key];
+  }
+
+  // ── profile modal data ─────────────────────────────────────────────
+  const profiles = {
+    appy: {
+      name: 'Appy',
+      tag: 'PhD Researcher &nbsp;&middot;&nbsp; Ex-Strategy Consultant &nbsp;&middot;&nbsp; GenAI UX Lead',
+      bio: 'She left consulting after four years to pursue a PhD. She is proactive, ambitious, and excited about where she is headed, but she has not met a woman who shares her background navigating elite consulting and academia. She is figuring out how to carry her consulting network and her identity forward across four years of academia and out the other side.',
+      topics: []
+    }
+  };
+
+  function openProfile(key) {
+    const p = profiles[key];
+    if (!p) return;
+    const avatarEl = document.getElementById('avatar-' + key);
+    const imgSrc = avatarEl ? avatarEl.querySelector('img').src : '';
+    document.getElementById('modal-avatar-img').src = imgSrc;
+    document.getElementById('modal-avatar-img').alt = p.name;
+    document.getElementById('modal-name').textContent = p.name;
+    document.getElementById('modal-tag').innerHTML = p.tag;
+    document.getElementById('modal-bio').textContent = p.bio;
+
+    const topicsWrap = document.getElementById('modal-topics');
+    const topicsLabel = document.getElementById('modal-topics-label');
+    if (p.topics && p.topics.length > 0) {
+      topicsWrap.innerHTML = p.topics.map(t => '<span class="topic-tag">' + t + '</span>').join('');
+      topicsLabel.style.display = 'block';
+    } else {
+      topicsWrap.innerHTML = '';
+      topicsLabel.style.display = 'none';
+    }
+
+    document.getElementById('modal-overlay').classList.add('visible');
+  }
+
+  function closeProfile() {
+    document.getElementById('modal-overlay').classList.remove('visible');
+  }
+
+  function toggleTranscript(key) {
+    document.getElementById('transcript-toggle-' + key).classList.toggle('open');
+    document.getElementById('transcript-body-' + key).classList.toggle('open');
+  }
+
+  function toggleDetail() {
+    document.getElementById('detail-toggle').classList.toggle('open');
+    document.getElementById('detail-body').classList.toggle('open');
+  }
+
+  function toggleAction(key, btnEl) {
+    const panel = document.getElementById('panel-' + key);
+    const isOpen = panel.classList.contains('visible');
+    document.querySelectorAll('.action-panel').forEach(p => p.classList.remove('visible'));
+    document.querySelectorAll('.action-btn').forEach(b => b.classList.remove('active'));
+    if (!isOpen) {
+      panel.classList.add('visible');
+      btnEl.classList.add('active');
+    }
+  }
+
+  function switchFormat(key, format) {
+    const st = getState(key);
+    st.format = format;
+    document.getElementById('tab-write-' + key).classList.toggle('active', format === 'write');
+    document.getElementById('tab-voice-' + key).classList.toggle('active', format === 'voice');
+    document.getElementById('write-panel-' + key).classList.toggle('visible', format === 'write');
+    document.getElementById('voice-panel-' + key).classList.toggle('visible', format === 'voice');
+  }
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+
+  async function toggleRecording(key) {
+    const st = getState(key);
+    const btn = document.getElementById('record-btn-' + key);
+    const status = document.getElementById('record-status-' + key);
+    const timerEl = document.getElementById('timer-' + key);
+
+    if (!st.mediaRecorder || st.mediaRecorder.state !== 'recording') {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        st.chunks = [];
+        st.mediaRecorder = new MediaRecorder(stream);
+        st.mediaRecorder.ondataavailable = e => { if (e.data.size > 0) st.chunks.push(e.data); };
+        st.mediaRecorder.onstop = () => {
+          st.blob = new Blob(st.chunks, { type: 'audio/webm' });
+          const url = URL.createObjectURL(st.blob);
+          document.getElementById('audio-playback-' + key).src = url;
+          document.getElementById('playback-area-' + key).classList.add('visible');
+          status.textContent = 'Recording saved. Press to re-record.';
+          st.voiceStatus = 'recorded';
+          stream.getTracks().forEach(t => t.stop());
+        };
+        st.mediaRecorder.start();
+        st.seconds = 0;
+        btn.classList.add('recording');
+        btn.innerHTML = '&#9646;&#9646;';
+        status.textContent = 'Recording... press to stop';
+        st.timerInterval = setInterval(() => {
+          st.seconds++;
+          timerEl.textContent = formatTime(st.seconds);
+        }, 1000);
+      } catch (e) {
+        status.textContent = 'Microphone access denied. Please allow access and try again.';
+      }
+    } else {
+      st.mediaRecorder.stop();
+      clearInterval(st.timerInterval);
+      btn.classList.remove('recording');
+      btn.innerHTML = '&#9679;';
+    }
+  }
+
+  function handleFileUpload(key, input) {
+    if (input.files.length > 0) {
+      const st = getState(key);
+      st.uploadedFile = input.files[0];
+      st.voiceStatus = 'uploaded';
+      st.blob = null;
+      document.getElementById('upload-filename-' + key).textContent = st.uploadedFile.name;
+      document.getElementById('upload-area-' + key).classList.add('has-file');
+    }
+  }
+
+  async function uploadAudioToDrive(key, name, questionId) {
+    const st = getState(key);
+    let blobToUpload = null;
+    if (st.voiceStatus === 'recorded' && st.blob) blobToUpload = st.blob;
+    else if (st.voiceStatus === 'uploaded' && st.uploadedFile) blobToUpload = st.uploadedFile;
+    if (!blobToUpload) return '';
+
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result.split(',')[1];
+        try {
+          await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              formType: 'voiceUpload',
+              audioBase64: base64,
+              questionId: questionId,
+              name: name || 'Appy'
+            })
+          });
+          resolve('uploaded-to-drive');
+        } catch {
+          resolve('upload-failed');
+        }
+      };
+      reader.readAsDataURL(blobToUpload);
+    });
+  }
+
+  async function sendFeedback(responderName, questionId, feedbackType, panelKey, sentNoteId) {
+    const st = getState(panelKey);
+    const btn = event.target;
+
+    let message = '';
+    let voiceMemoUrl = '';
+
+    if (st.format === 'write') {
+      message = document.getElementById(panelKey.startsWith('thanks') ? 'thanks-text-' + panelKey.split('-')[1] : 'ask-text-' + panelKey.split('-')[1]).value.trim();
+      if (message.length < 3) return;
+    } else {
+      if (st.voiceStatus === 'none') return;
+      btn.disabled = true;
+      voiceMemoUrl = await uploadAudioToDrive(panelKey, 'Rachel', questionId);
+    }
+
+    btn.disabled = true;
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          formType: 'askerFeedback',
+          questionId: questionId,
+          responderName: responderName,
+          feedbackType: feedbackType,
+          format: st.format,
+          message: message,
+          voiceMemoUrl: voiceMemoUrl
+        })
+      });
+    } catch (e) {}
+    document.getElementById(sentNoteId).classList.add('visible');
+  }
+
+  function toggleBox(key) {
+    document.getElementById('toggle-' + key).classList.toggle('open');
+    document.getElementById('body-' + key).classList.toggle('open');
+  }
+
+</script>
+
+</body>
+</html>
