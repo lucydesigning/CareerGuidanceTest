@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="color-scheme" content="light only" />
+<meta name="supported-color-schemes" content="light" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A note back for Lia</title>
+<meta property="og:type" content="website" />
+<meta property="og:title" content="A note back, just for you" />
+<meta property="og:description" content="The woman you wrote to read your response and sent something back." />
+<meta property="og:image" content="https://lucydesigning.github.io/CareerGuidanceTest/M.webp" />
+<meta property="og:url" content="https://lucydesigning.github.io/CareerGuidanceTest/thanks-q011-lia.html" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="A note back, just for you" />
+<meta name="twitter:description" content="The woman you wrote to read your response and sent something back." />
+<meta name="twitter:image" content="https://lucydesigning.github.io/CareerGuidanceTest/M.webp" />
+<style>
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { color-scheme: light; background: #f5f3ed; }
+  :root {
+    --ink:       #1c1c1a;
+    --ink-2:     #4a4a47;
+    --ink-3:     #7a7a76;
+    --ink-4:     #a8a8a3;
+    --paper:     #f5f3ed;
+    --paper-2:   #eceae2;
+    --white:     #ffffff;
+    --accent:    #2d5a4e;
+    --accent-lt: #e8f0ee;
+    --red:       #b94040;
+    --border:    rgba(28,28,26,0.12);
+    --border-md: rgba(28,28,26,0.20);
+    --font-serif: Georgia, "Times New Roman", serif;
+    --font-sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --radius:     10px;
+  }
+  body { font-family: var(--font-sans); background: #f5f3ed !important; color: #1c1c1a !important; min-height: 100vh; padding: 0 0 5rem; }
+
+  .site-header { background: var(--accent); padding: 0.85rem 1.5rem; display: flex; align-items: center; gap: 10px; }
+  .site-header-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.4); }
+  .site-header-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.65); }
+
+  .wrap { max-width: 560px; margin: 0 auto; padding: 0 1.25rem; }
+
+  /* ── Avatars ── */
+  .avatar { border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: #fff; font-family: var(--font-serif); flex-shrink: 0; overflow: hidden; }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .avatar-asker { width: 72px; height: 72px; background: var(--accent); font-size: 28px; }
+  .avatar-sm { width: 44px; height: 44px; background: var(--ink-3); font-size: 17px; }
+
+  .intro { padding: 2rem 0 0.5rem; text-align: center; }
+  .intro .avatar-asker { margin: 0 auto 1rem; }
+  .intro-eyebrow { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 0.6rem; }
+  .intro-heading { font-family: var(--font-serif); font-size: 25px; font-weight: 400; line-height: 1.4; color: var(--ink); margin-bottom: 0.9rem; text-align: left; }
+  .intro-sub { font-size: 14px; color: var(--ink-2); line-height: 1.75; margin-bottom: 1.5rem; text-align: left; }
+
+  .q-toggle { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.25rem; border: 0.5px solid var(--border-md); border-radius: var(--radius); background: var(--white); cursor: pointer; font-size: 13px; color: var(--ink-3); user-select: none; transition: background 0.15s; margin-bottom: 2rem; }
+  .q-toggle:hover { background: var(--paper); }
+  .q-toggle.open { border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; }
+  .q-toggle-arrow { transition: transform 0.2s; }
+  .q-toggle.open .q-toggle-arrow { transform: rotate(180deg); }
+  .q-body { display: none; border: 0.5px solid var(--border-md); border-top: none; border-radius: 0 0 var(--radius) var(--radius); background: var(--white); padding: 1.25rem; margin-bottom: 2rem; }
+  .q-body.open { display: block; }
+  .q-block { margin-bottom: 1rem; }
+  .q-block:last-child { margin-bottom: 0; }
+  .q-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-4); margin-bottom: 4px; }
+  .q-text { font-size: 14px; color: var(--ink-2); line-height: 1.65; }
+
+  .response-card { background: var(--white); border: 0.5px solid var(--border-md); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .response-head { display: flex; align-items: center; gap: 12px; margin-bottom: 1rem; }
+  .response-head-text { flex: 1; }
+  .response-name { font-family: var(--font-serif); font-size: 19px; color: var(--ink); line-height: 1.3; }
+  .response-tag { font-size: 12px; color: var(--ink-3); margin-top: 1px; }
+  .response-tagline { font-family: var(--font-serif); font-style: italic; font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 1.1rem; }
+  .topic-tag { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: var(--paper); color: var(--ink-3); border: 0.5px solid var(--border-md); }
+  .modal-topics-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-4); margin: 1.1rem 0 0.5rem; }
+  .modal-topics { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  audio { width: 100%; border-radius: 8px; margin-bottom: 0.25rem; display: block; }
+
+  .second-note { border-top: 0.5px solid var(--border); margin-top: 1.1rem; padding-top: 1.1rem; }
+  .second-note-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-4); margin-bottom: 0.6rem; }
+
+  .transcript-toggle { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--ink-3); background: none; border: none; cursor: pointer; padding: 6px 0 0; margin-bottom: 0.5rem; }
+  .transcript-toggle:hover { color: var(--accent); }
+  .transcript-toggle-arrow { transition: transform 0.2s; font-size: 10px; }
+  .transcript-toggle.open .transcript-toggle-arrow { transform: rotate(180deg); }
+  .transcript-body { display: none; background: var(--paper); border-radius: var(--radius); padding: 1rem 1.1rem; margin-bottom: 1rem; }
+  .transcript-body.open { display: block; }
+  .transcript-text { font-size: 13px; color: var(--ink-2); line-height: 1.75; }
+  .transcript-text p { margin-bottom: 0.85rem; }
+  .transcript-text p:last-child { margin-bottom: 0; }
+  .transcript-note { font-size: 11px; color: var(--ink-4); font-style: italic; margin-top: 0.85rem; }
+
+  .response-actions { display: flex; gap: 8px; margin-top: 1.1rem; }
+  .action-btn { flex: 1; padding: 10px 14px; border: 0.5px solid var(--border-md); border-radius: var(--radius); background: var(--white); font-size: 13px; color: var(--ink-2); cursor: pointer; text-align: center; transition: border-color 0.15s, background 0.15s, color 0.15s; }
+  .action-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .action-btn.active { border-color: var(--accent); background: var(--accent-lt); color: var(--accent); }
+
+  .action-panel { display: none; margin-top: 1rem; }
+  .action-panel.visible { display: block; }
+
+  .format-tabs { display: flex; gap: 8px; margin-bottom: 0.75rem; }
+  .format-tab { flex: 1; padding: 8px 10px; border: 0.5px solid var(--border-md); border-radius: var(--radius); cursor: pointer; background: var(--paper); text-align: center; font-size: 12px; color: var(--ink-3); transition: border-color 0.15s, background 0.15s, color 0.15s; }
+  .format-tab:hover { border-color: var(--ink-3); }
+  .format-tab.active { border-color: var(--accent); background: var(--accent-lt); color: var(--accent); }
+  .format-panel { display: none; }
+  .format-panel.visible { display: block; }
+
+  textarea { width: 100%; padding: 12px 14px; font-family: var(--font-sans); font-size: 14px; line-height: 1.6; color: var(--ink); background: var(--paper); border: 0.5px solid var(--border-md); border-radius: var(--radius); resize: vertical; min-height: 80px; transition: border-color 0.15s; }
+  textarea:focus { outline: none; border-color: var(--accent); }
+  textarea::placeholder { color: var(--ink-4); font-style: italic; font-size: 13px; }
+
+  .voice-area { background: var(--paper); border: 0.5px solid var(--border-md); border-radius: var(--radius); padding: 1rem; }
+  .voice-or { text-align: center; font-size: 11px; color: var(--ink-4); margin: 0.7rem 0; }
+  .recorder-controls { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+  .record-btn { width: 46px; height: 46px; border-radius: 50%; border: none; cursor: pointer; background: var(--accent); color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: opacity 0.15s, transform 0.1s; }
+  .record-btn:hover { opacity: 0.88; }
+  .record-btn.recording { background: var(--red); }
+  .record-btn:active { transform: scale(0.95); }
+  .record-timer { font-size: 15px; font-weight: 500; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .record-status { font-size: 12px; color: var(--ink-2); text-align: center; }
+  .playback-area { margin-top: 0.75rem; display: none; }
+  .playback-area.visible { display: block; }
+  .upload-area { border: 1.5px dashed var(--border-md); border-radius: var(--radius); padding: 1rem; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; background: var(--white); font-size: 12px; color: var(--ink-3); }
+  .upload-area:hover { border-color: var(--accent); background: var(--accent-lt); }
+  .upload-area.has-file { border-style: solid; border-color: var(--accent); }
+  input[type="file"] { display: none; }
+
+  .btn-send { margin-top: 0.6rem; font-size: 13px; font-weight: 500; color: #fff; background: var(--accent); border: none; border-radius: 8px; padding: 9px 20px; cursor: pointer; transition: opacity 0.15s; }
+  .btn-send:hover { opacity: 0.88; }
+  .btn-send:disabled { opacity: 0.5; cursor: not-allowed; }
+  .sent-note { font-size: 12px; color: var(--accent); margin-top: 0.5rem; display: none; }
+  .sent-note.visible { display: block; }
+
+  .placeholder-card { background: var(--paper-2); border: 0.5px dashed var(--border-md); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; text-align: center; font-size: 13px; color: var(--ink-3); line-height: 1.7; }
+  .feedback-link { display: block; width: max-content; margin: 2rem auto 0; padding: 10px 22px; background: var(--accent); color: #fff; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; transition: opacity 0.15s; }
+  .feedback-link:hover { opacity: 0.88; }
+
+  .contact-note { text-align: center; font-size: 12px; color: var(--ink-4); margin-top: 2rem; }
+  .contact-note a { color: var(--ink-3); }
+
+  .avatar { cursor: pointer; transition: opacity 0.15s; }
+  .avatar:hover { opacity: 0.85; }
+
+  .modal-overlay { position: fixed; inset: 0; background: rgba(28,28,26,0.55); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1.25rem; }
+  .modal-overlay.visible { display: flex; }
+  .modal-box { background: var(--white); border-radius: 14px; max-width: 400px; width: 100%; padding: 1.75rem; position: relative; max-height: 82vh; overflow-y: auto; }
+  .modal-close { position: absolute; top: 10px; right: 12px; background: none; border: none; font-size: 22px; color: var(--ink-3); cursor: pointer; line-height: 1; padding: 6px; }
+  .modal-close:hover { color: var(--ink); }
+  .modal-avatar { width: 88px; height: 88px; border-radius: 50%; overflow: hidden; margin: 0 auto 1rem; }
+  .modal-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .modal-name { font-family: var(--font-serif); font-size: 22px; color: var(--ink); text-align: center; margin-bottom: 4px; }
+  .modal-tag { font-size: 12px; color: var(--ink-3); text-align: center; margin-bottom: 1.1rem; line-height: 1.5; }
+  .modal-bio { font-size: 14px; color: var(--ink-2); line-height: 1.75; }
+
+
+  .note-card { background: var(--white); border: 0.5px solid var(--border-md); border-radius: 12px; padding: 1.6rem 1.5rem; margin-bottom: 1.75rem; }
+  .note-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-4); margin-bottom: 0.7rem; }
+  .note-text { font-family: var(--font-serif); font-size: 17px; line-height: 1.7; color: var(--ink); }
+  .box-toggle { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.25rem; border: 0.5px solid var(--border-md); border-radius: var(--radius); background: var(--white); cursor: pointer; font-size: 13px; color: var(--ink-3); user-select: none; transition: background 0.15s; margin-bottom: 0.75rem; }
+  .box-toggle:hover { background: var(--paper); }
+  .box-toggle.open { border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; }
+  .box-toggle-arrow { transition: transform 0.2s; }
+  .box-toggle.open .box-toggle-arrow { transform: rotate(180deg); }
+  .box-body { display: none; border: 0.5px solid var(--border-md); border-top: none; border-radius: 0 0 var(--radius) var(--radius); background: var(--white); padding: 1.25rem; margin-bottom: 0.75rem; }
+  .box-body.open { display: block; }
+  .cta-spacer { height: 1.25rem; }
+  .signoff { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 0.5px solid var(--border); font-size: 14px; color: var(--ink-2); line-height: 1.75; }
+  .signoff-name { font-family: var(--font-serif); font-size: 16px; color: var(--ink); margin-top: 0.5rem; }
+  .contact-note { text-align: center; font-size: 12px; color: var(--ink-4); margin-top: 2rem; }
+  .contact-note a { color: var(--ink-3); }
+
+</style>
+</head>
+<body>
+
+  <div class="site-header">
+    <div class="site-header-dot"></div>
+    <div class="site-header-label">A note back, just for you</div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="intro">
+      <div class="avatar avatar-asker" id="avatar-m" onclick="openProfile('m')"><img src="M.webp" alt="M"></div>
+      <div class="intro-eyebrow">From the woman you wrote to</div>
+    </div>
+
+    <div class="intro-heading">M read your response, Lia.</div>
+    <div class="intro-sub">
+      She sent this back after reading it. Passing it on exactly as she wrote it.
+    </div>
+
+    <div class="note-card">
+      <div class="note-label">From M</div>
+      <div class="note-text">Thank you for this thoughtful response, and for sharing from your own experience. This is a very encouraging nudge at this point in the journey, and I appreciate it.</div>
+    </div>
+
+    <div class="box-toggle" id="toggle-q" onclick="toggleBox('q')">
+      <span>See what she asked</span>
+      <span class="box-toggle-arrow">&#8964;</span>
+    </div>
+    <div class="box-body" id="body-q">
+
+      <div class="q-block">
+        <div class="q-label">Her situation</div>
+        <div class="q-text">I'm job searching and very conflicted about how best to frame my experience this time around. The market is more volatile and the criteria seems like it has shifted since the last time I made a job transition 3 years ago. My most recent role ended up being a hybrid product design &amp; product management leadership role - my background is in design &amp; research, and throughout my career I have prided myself on being able to "wear many hats." However, to present myself as a strong candidate for the roles I am interested in, I feel like I need to pick a lane. I know I will enjoy a design-focused role more, and will probably do better work, but there are fewer opportunities and I worry about longevity - these seem to be among the first impacted in RIFs. There are more opportunities in the product management space and perhaps more security (though who knows), but I worry that there is stronger competition with more directly relevant / technical experience. I also worry about continuing down a career path that departs from my interests, but this concern feels like a bit of a luxury given the current landscape.</div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">What makes it hard for her right now</div>
+        <div class="q-text">This is not my first career transition, but things feel different this time around and less familiar, and it is knocking my confidence. I also feel less flexible about my own criteria for a new role because I have a young child (which I did not last time I changed jobs) and don't want to compromise on things like onsite requirements, working hours, or certain benefits.</div>
+      </div>
+      <div class="q-block">
+        <div class="q-label">What she was looking for</div>
+        <div class="q-text">Has anyone navigated a similar transition? What did that look like? What helped? Are you satisfied with the outcome?</div>
+      </div>
+    
+    </div>
+
+    <div class="box-toggle" id="toggle-own" onclick="toggleBox('own')">
+      <span>Hear what you sent</span>
+      <span class="box-toggle-arrow">&#8964;</span>
+    </div>
+    <div class="box-body" id="body-own">
+      <audio controls preload="metadata">
+        <source src="audio-q011-lia.webm" type="audio/webm">
+        Your browser does not support the audio element.
+      </audio>
+
+        <div class="transcript-text">
+          <p>Hi. Your question resonated a lot with me. I'm a bit more senior than you in my career, and I recently went through a job transition where I was thinking about whether to be design only, or product only, or both. These were for more senior roles, Chief Product Officer, Chief Design Officer, mostly in consulting.</p>
+          <p>As someone who is now leading a design team in a consultancy, I can say that one of the best things you can do is to expand further into product. It doesn't mean you're leaving design behind. With GenAI and the shifts happening there, with so many people able to be a maker, I think you could be a really strong candidate as a product leader.</p>
+          <p>Sometimes we see product strategy and product management as one thing, and sometimes as two, and it depends on the role. But there are a lot of companies who would find your design background coming into product meaningful, who don't just want someone who has been a PM their whole life.</p>
+          <p>So what I'd suggest, and it's what I did in my last job search, and maybe you're doing it already, is to let yourself explore and try both. These things emerge after a lot of different conversations. Have a flavor of your profile and resume that is more design, and one that is more product. And maybe you can talk about product in terms of zero to one product strategy, which is where I think people who come from design play best, because you get to bring the user into the equation when you're thinking about what you should actually build. You bring that innovative, divergent thinking.</p>
+          <p>So maybe hold it a little less as either/or and more as and. Have your design flavor, have your product flavor, and keep exploring. Don't stop yet, and don't feel like you have to choose one or the other, because it's going to be the company, the role itself, the people you work with, what their aspiration is, and which ones can accommodate the constraints you have right now, that are going to matter.</p>
+          <p>My last reflection from my own job search is that even though the destination is getting a job, the journey is part of the destination too. You have to have enough conversations, enough interviews, meet enough people, to increase your chances but also to get more and more clear. You feel clear that design is where you'd be happiest, but if you look at the evolving landscape and find the right people to talk to, you may be really happy doing product strategy as well. Or you may decide it's definitely not what you want. Either way, if you don't go further, you won't feel good about the decision you make.</p>
+          <p>I hope I'm catching you at the right time in your search and that you haven't been at it forever already. I'd recommend not giving up, and pushing to the next level of your network, friends of friends of friends, to have more conversations and see where you can go. Don't give up. I know it's hard right now.</p>
+        </div>
+        <div class="transcript-note">This transcript was generated with AI and may not be word-for-word accurate.</div>
+      
+    </div>
+
+    <div class="cta-spacer"></div>
+
+    <div class="placeholder-card">
+      While you are here, I would love to know how this felt from your side. Whether it was easy or awkward, whether you would do it again, whether the way I asked could be better. Two minutes, and it genuinely shapes what this becomes.
+      <a class="feedback-link" href="answerer-feedback.html?q=Q011&amp;name=Lia">Share your thoughts</a>
+    </div>
+
+    <div class="signoff">
+      Thank you for making the time.
+      <div class="signoff-name">Lucy</div>
+    </div>
+
+    <div class="contact-note">Questions? <a href="mailto:lucydesigning@gmail.com?subject=Q011">Email Lucy</a></div>
+
+  </div>
+
+  <!-- PROFILE MODAL -->
+  <div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this) closeProfile()">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeProfile()">&times;</button>
+      <div class="modal-avatar" id="modal-avatar"><img id="modal-avatar-img" src="" alt=""></div>
+      <div class="modal-name" id="modal-name"></div>
+      <div class="modal-tag" id="modal-tag"></div>
+      <div class="modal-bio" id="modal-bio"></div>
+      <div class="modal-topics-label" id="modal-topics-label" style="display:none;">She's open to talking about</div>
+      <div class="modal-topics" id="modal-topics"></div>
+    </div>
+  </div>
+
+<script>
+  const profiles = {
+    m: {
+      name: 'M',
+      tag: 'Senior Manager, Digital Product Design &nbsp;&middot;&nbsp; Infrastructure consulting &nbsp;&middot;&nbsp; Mid-career, in transition',
+      bio: 'She has built her career on being able to wear many hats, and is now job searching in a market that feels less familiar than the last time she moved. She is weighing a design and research path she would enjoy more against product management roles that may offer more security, while holding firmer lines on hours, onsite requirements, and benefits than she used to.',
+      topics: []
+    }
+  };
+
+  function openProfile(key) {
+    const p = profiles[key];
+    if (!p) return;
+    const avatarEl = document.getElementById('avatar-' + key);
+    const imgSrc = avatarEl ? avatarEl.querySelector('img').src : '';
+    document.getElementById('modal-avatar-img').src = imgSrc;
+    document.getElementById('modal-avatar-img').alt = p.name;
+    document.getElementById('modal-name').textContent = p.name;
+    document.getElementById('modal-tag').innerHTML = p.tag;
+    document.getElementById('modal-bio').textContent = p.bio;
+
+    const topicsWrap = document.getElementById('modal-topics');
+    const topicsLabel = document.getElementById('modal-topics-label');
+    if (p.topics && p.topics.length > 0) {
+      topicsWrap.innerHTML = p.topics.map(function (t) { return '<span class="topic-tag">' + t + '</span>'; }).join('');
+      topicsLabel.style.display = 'block';
+    } else {
+      topicsWrap.innerHTML = '';
+      topicsLabel.style.display = 'none';
+    }
+
+    document.getElementById('modal-overlay').classList.add('visible');
+  }
+
+  function closeProfile() {
+    document.getElementById('modal-overlay').classList.remove('visible');
+  }
+
+  function toggleBox(key) {
+    document.getElementById('toggle-' + key).classList.toggle('open');
+    document.getElementById('body-' + key).classList.toggle('open');
+  }
+
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeProfile(); });
+</script>
+
+</body>
+</html>
